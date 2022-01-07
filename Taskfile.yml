@@ -1,0 +1,63 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - poetry run python -m app
+    silent: true
+
+  redis:
+    desc: open redis-cli
+    cmds:
+      - redis-cli $REDIS_CLI%
+
+  logs:
+    desc: monitor logs
+    cmds:
+      - ./cli -l | ccze -A
+
+  restart:
+    desc: restart the service
+    cmds: 
+      - ./cli -r
+
+  stop:
+    desc: stop the server
+    cmds:
+      - ./cli -k
+  
+  push:
+    desc: commit and pushes current changes
+    cmds:
+      - git add . 
+      - ./cli -c
+
+  pull:
+    desc: pulls from git
+    cmds:
+      - ./cli -p
+
+  pp:
+    desc: push and pull
+    cmds:
+      - task: push
+      - task: pull
+
+  install:
+    desc: calls poetry install and npm ci
+    cmds:
+      - ./cli -i
+
+  deploy:
+    desc: shortcut for stop -> push -> pull -> restart
+    cmds: 
+      - task: stop
+      - task: push
+      - task: pull
+      - task: install
+      - task: restart
