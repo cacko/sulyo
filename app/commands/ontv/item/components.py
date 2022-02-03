@@ -61,7 +61,7 @@ class ScoreRow:
         if self.row.win:
             res.append(
                 render_columns(
-                    (Column(size=sum([x.size for x in cols]), align=Align.CENTER)),
+                    (Column(size=sum([x.size for x in cols],), align=Align.CENTER)),
                     [self.row.win],
                 )
             )
