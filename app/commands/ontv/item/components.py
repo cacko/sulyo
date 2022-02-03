@@ -56,10 +56,10 @@ class ScoreRow:
             )
         else:
             raise NotImplemented
-        res = render_columns(cols, [row])
+        res = [render_columns(cols, [row])]
         if self.row.win:
-            res += render_columns(cols, [row])
-        return res
+            res.append(render_columns(cols, [row]))
+        return "\n".join(res)
 
     @property
     def home(self):
