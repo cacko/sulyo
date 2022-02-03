@@ -51,8 +51,8 @@ class ScoreRow:
             row = (
                 self.row.home.upper(),
                 self.row.away.upper(),
-                "",
-                "",
+                self.row.score,
+                self.row.status,
             )
         else:
             raise NotImplemented
