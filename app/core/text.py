@@ -33,14 +33,15 @@ MAPS = {
     47: 32, # /
 }
 
-WHITESPACE = 8287
+WHITESPACE = " "
 
 NEWLINE = [10, 13]
 
 NOTCOMPATIBLE = ""
 
 def align_whitespace(str: str):
-    return re.sub(r"\s",chr(WHITESPACE)*2,str)
+    return str
+    # return re.sub(r"\s",chr(WHITESPACE)*2,str)
 
 def get_monospace(char: str):
     if is_emoji(char):
