@@ -45,14 +45,12 @@ class ScoreRow:
             cols = (
                 Column(size=25, align=Align.RIGHT),
                 Column(size=25, align=Align.LEFT),
-                Column(size=5, align=Align.CENTER),
-                Column(size=6, align=Align.RIGHT),
+                Column(size=12, align=Align.CENTER),
             )
             row = (
                 self.row.home.upper(),
                 self.row.away.upper(),
-                self.row.score,
-                self.row.status,
+                f"{self.row.score} {self.row.status}",
             )
         else:
             raise NotImplemented
