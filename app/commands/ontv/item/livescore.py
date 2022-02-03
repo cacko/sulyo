@@ -58,9 +58,7 @@ class Livescore(TimeCacheable):
                 home=x.strHomeTeam,
                 score=x.displayScore,
                 away=x.strAwayTeam,
-                win=f"\n{x.strWinDescription[:58]:^58}"
-                if x.displayStatus == "AET"
-                else "",
+                win=x.strWinDescription if x.displayStatus == "AET" else "",
             )
             for x in sorted(items, key=lambda itm: itm.sort)
             if any(

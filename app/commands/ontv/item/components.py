@@ -56,7 +56,10 @@ class ScoreRow:
             )
         else:
             raise NotImplemented
-        return render_columns(cols, [row]) + to_mono(self.row.win)
+        res = render_columns(cols, [row])
+        if self.row.win:
+            res += render_columns(cols, [row])
+        return res
 
     @property
     def home(self):
