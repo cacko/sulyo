@@ -22,26 +22,25 @@ CAPITALS = range(ord("A"), ord("Z") + 1)  # 120432
 SMALL = range(ord("a"), ord("z") + 1)  # 120458
 NUMBERS = range(ord("0"), ord("9") + 1)  # 120822
 MAPS = {
-    45: 32, # -
+    45: 65123, # -
     32: 32, # space
-    124:32, # |
-    58: 32, # :
-    94: 32, # ^
-    37: 32, # %
+    124: 65372, # |
+    58: 8758, # :
+    94: 10032, # ^
+    37: 65130, # %
     40: 32, # (
     41: 32,  # )
     47: 32, # /
 }
 
-WHITESPACE = " "
+WHITESPACE = 8287
 
 NEWLINE = [10, 13]
 
 NOTCOMPATIBLE = ""
 
 def align_whitespace(str: str):
-    return str
-    # return re.sub(r"\s",chr(WHITESPACE)*2,str)
+    return re.sub(r"\s",chr(WHITESPACE)*2,str)
 
 def get_monospace(char: str):
     if is_emoji(char):
