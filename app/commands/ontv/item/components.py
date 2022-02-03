@@ -44,13 +44,15 @@ class ScoreRow:
         elif self.format == ScoreFormat.LIST:
             cols = (
                 Column(size=25, align=Align.RIGHT),
+                Column(size=6, align=Align.CENTER),
                 Column(size=25, align=Align.LEFT),
-                Column(size=12, align=Align.CENTER),
+                Column(size=6, align=Align.RIGHT),
             )
             row = (
                 self.row.home.upper(),
+                self.row.score,
                 self.row.away.upper(),
-                f"{self.row.score} {self.row.status}",
+                self.row.status,
             )
         else:
             raise NotImplemented
