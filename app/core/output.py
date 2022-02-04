@@ -130,3 +130,6 @@ def to_mono(text):
 
 def align_whitespace(text):
     return TextOutput.alignWhitespace(text)
+
+def split_with_quotes(text):
+    return TextOutput.split_with_quotes(text)
