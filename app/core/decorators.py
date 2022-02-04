@@ -3,12 +3,14 @@ from typing import Callable, Optional
 from dataclasses_json import dataclass_json, Undefined
 from app import App
 
+
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
 class CommandDef:
     trigger: str
     handler: Callable
     desc: Optional[str] = None
+    triggerSource: Optional[bool] = False
 
 
 def parametrized(dec):
@@ -22,8 +24,12 @@ def parametrized(dec):
 
 
 @parametrized
-def command(func, trigger: str, desc: str):
-    App.register(CommandDef(trigger=trigger, handler=func, desc=desc))
+def command(func, trigger: str, desc: str, triggerSource: bool = False):
+    App.register(
+        CommandDef(
+            trigger=trigger, handler=func, desc=desc, triggerSource=triggerSource
+        )
+    )
 
     def registrar(*args):
         return func(*args)

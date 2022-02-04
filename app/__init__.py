@@ -139,6 +139,9 @@ class App(object, metaclass=AppMeta):
                     if not msg:
                         continue
                     trigger, args = [*msg.split(" ", 1), ""][:2]
+                    
+                    if trigger.startswith("+") and trigger != message.source:
+                        continue
 
                     command = CommandDef.triggered(trigger)
                     if not command:
