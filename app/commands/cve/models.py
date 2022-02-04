@@ -155,11 +155,11 @@ class CVEListItem:
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
 class CVEResult:
-    CVE_data_type: Optional[str]
-    CVE_data_format: Optional[str]
-    CVE_data_version: Optional[str]
-    CVE_data_timestamp: Optional[str]
-    CVE_Items: list[CVEListItem]
+    CVE_data_type: Optional[str] = None
+    CVE_data_format: Optional[str] = None
+    CVE_data_version: Optional[str] = None
+    CVE_data_timestamp: Optional[str] = None
+    CVE_Items: list[CVEListItem] = None
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
