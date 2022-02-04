@@ -76,7 +76,7 @@ class Output(object, metaclass=OutputMeta):
         id = blake2b(digest_size=20)
         id.update(text.encode())
         output_filename = Path(tempfile.tempdir) / f"{id.hexdigest()}.png"
-        im = Image.new('RGBA', (500, len(text.split("\n"))* 12), (45,108,234, 255))
+        im = Image.new('RGBA', (500, len(text.split("\n"))* 12 * 3), (45,108,234, 255))
         draw = ImageDraw.Draw(im)
         try:
             monoFont = ImageFont.truetype(font='./SourceCodePro-Medium.ttf', size=12)
