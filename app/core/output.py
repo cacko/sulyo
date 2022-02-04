@@ -61,6 +61,9 @@ class OutputMeta(type):
     
     def alignWhitespace(cls, text):
         return cls().align_whitespace(text)
+    
+    def splitWithQuotes(cls, text):
+        return cls().split_with_quotes(text)
 
 class Output(object, metaclass=OutputMeta):
     
@@ -132,4 +135,4 @@ def align_whitespace(text):
     return TextOutput.alignWhitespace(text)
 
 def split_with_quotes(text):
-    return TextOutput.split_with_quotes(text)
+    return TextOutput.splitWithQuotes(text)
