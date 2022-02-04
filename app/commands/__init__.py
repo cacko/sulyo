@@ -24,7 +24,6 @@ __all__ = [
     "cvesubscribe_command",
     "cveunsubscribe_command",
     "cvelistsubscriptions_command",
-    "happydb_command",
 ]
 
 from .avatar import *
@@ -34,4 +33,3 @@ from .music import *
 from .ontv.ontv import *
 from .console import *
 from .cve import *
-from .greeting import *
