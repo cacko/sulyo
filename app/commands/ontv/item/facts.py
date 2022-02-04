@@ -2,21 +2,26 @@ from queue import Empty
 from app.commands.ontv.item.livescore_details import ParserDetails
 from app.core import to_mono, log
 from app.commands.ontv.item.models import *
+from app.core.cacheable import Cachable
 
 
-class Facts:
+class Facts(Cachable):
 
     __item: ParserDetails = None
+    _struct: list[GameFact] = None
 
     def __init__(self, item: Event):
         self.__item = item
+        
+    @property
+    def id(self):
+        raise NotImplemented()
 
     @property
-    def empty(self) -> RenderResult:
-        return EmptyResult()
-
-    @property
-    async def message(self) -> RenderResult:
-        details = await ParserDetails.get(self.__item.details)
-        facts: list[GameFact] = details.facts
-        return RenderResult(message=to_mono("\n\n".join([x.text for x in facts])))
+    async def message(self) -> str:
+        if not self.load():       
+            details = await ParserDetails.get(self.__item.details)
+            self._struct: list[GameFact] = self.tocache(details.facts)
+        if not self._struct:
+            return None
+        return "\n\n".join([x.text for x in self._struct])

@@ -235,7 +235,9 @@ async def lineups_command(context: Context) -> RenderResult:
 @command(trigger="facts", desc="facts for the first matching game")
 async def facts_command(context: Context) -> RenderResult:
     facts = await OnTV.facts(context.query, context.group, context.source)
-    await context.send(await facts.message)
+    message = await facts.message
+    response = EmptyResult() if not message else RenderResult(message=to_mono(message))
+    await context.send(response)
 
 
 @command(trigger="stats", desc="stats for the first matching game")
