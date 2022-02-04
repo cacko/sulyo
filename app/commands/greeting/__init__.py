@@ -5,7 +5,7 @@ from argparse import ArgumentTypeError
 from .happybd import HappyBD
 
 
-@command(trigger="+447479303304")
+@command(trigger="+447479303304", desc=None)
 async def happydb_command(context: Context):
     try:
         message = HappyBD.message(context.source)

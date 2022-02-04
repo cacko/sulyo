@@ -24,12 +24,8 @@ def parametrized(dec):
 
 
 @parametrized
-def command(func, trigger: str, desc: str, triggerSource: bool = False):
-    App.register(
-        CommandDef(
-            trigger=trigger, handler=func, desc=desc, triggerSource=triggerSource
-        )
-    )
+def command(func, trigger: str, desc: str = None):
+    App.register(CommandDef(trigger=trigger, handler=func, desc=desc))
 
     def registrar(*args):
         return func(*args)
