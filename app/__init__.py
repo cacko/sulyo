@@ -28,7 +28,7 @@ class CommandDefMeta(type):
             filter(
                 lambda x: any(
                     [
-                        x.trigger.startswith("+") and x.trigger != message.source,
+                        x.trigger.startswith("+") and x.trigger == message.source,
                         len(x.trigger) == 2 and fs == x.trigger.lower(),
                         len(fs) > 2 and x.trigger.lower().startswith(fs),
                     ]
