@@ -125,3 +125,5 @@ class ImageOutput(Output):
 class TextOutput(Output):
     utf8mono = True
 
+def to_mono(text):
+    return TextOutput.toMono(text)
