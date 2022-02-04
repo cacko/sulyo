@@ -2,7 +2,7 @@ from app.core.models import RenderResult
 from app.core.decorators import command
 from app.json_rpc.context import Context
 from argparse import ArgumentTypeError
-from happybd import HappyBD
+from .happybd import HappyBD
 
 
 @command(trigger="+447479303304")

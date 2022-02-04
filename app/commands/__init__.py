@@ -24,7 +24,7 @@ __all__ = [
     "cvesubscribe_command",
     "cveunsubscribe_command",
     "cvelistsubscriptions_command",
-    "happydb_command",
+    "happybd_command",
 ]
 
 from .avatar import *
