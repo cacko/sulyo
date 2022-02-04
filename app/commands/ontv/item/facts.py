@@ -15,7 +15,7 @@ class Facts(Cachable):
 
     @property
     def id(self):
-        raise f"facts:{self.__item.idEvent}"
+        return f"facts:{self.__item.idEvent}"
 
     @property
     async def message(self) -> str:
