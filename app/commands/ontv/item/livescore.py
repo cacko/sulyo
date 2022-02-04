@@ -6,7 +6,7 @@ from app.commands.ontv.models import GameNotFound
 from app.core import Request
 from app.commands.ontv.item.models import *
 from app.core.cacheable import TimeCacheable
-from app.core.output import split_with_quotes
+from app.core.output import split_with_quotes, ImageOutput
 from app.commands.ontv.item.components import ScoreFormat, ScoreRow
 
 
@@ -88,11 +88,17 @@ class Livescore(TimeCacheable):
                         x,
                         *details.rendered,
                     ]
-                    return RenderResult(message="\n".join(map(str, res)))
+                    return RenderResult(
+                        attachment=ImageOutput.image(
+                            "\n".join(map(str, res))
+                        ).as_posix()
+                    )
             except GameNotFound:
                 return EmptyResult()
         return (
-            RenderResult(message="\n".join(map(str, filtered)))
+            RenderResult(
+                attachment=ImageOutput.image("\n".join(map(str, filtered))).as_posix()
+            )
             if len(filtered)
             else EmptyResult()
         )

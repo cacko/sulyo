@@ -1,4 +1,4 @@
-from app.core.output import Align, Column, TextOutput
+from app.core.output import Align, Column, ImageOutput, TextOutput
 from collections import namedtuple
 from enum import Enum
 
@@ -56,10 +56,10 @@ class ScoreRow:
             )
         else:
             raise NotImplemented
-        res = [TextOutput.renderColumns(cols, [row])]
+        res = [ImageOutput.renderColumns(cols, [row])]
         if self.row.win:
             res.append(
-                TextOutput.renderColumns(
+                ImageOutput.renderColumns(
                     [Column(size=sum([x.size for x in cols]), align=Align.CENTER)],
                     [[self.row.win]],
                 )
