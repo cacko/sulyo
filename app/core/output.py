@@ -79,7 +79,7 @@ class Output(object, metaclass=OutputMeta):
         im = Image.new('RGBA', (1000, 800), (45,108,234, 255))
         draw = ImageDraw.Draw(im)
         try:
-            monoFont = ImageFont.truetype(font='./SourceCodePro-Medium.ttf', size=20)
+            monoFont = ImageFont.truetype(font='./SourceCodePro-Medium.ttf', size=35)
             draw.text((50, 10), text, fill='white', font=monoFont)
         except Exception as ex:
             draw.text((10, 10), text, fill='white')
