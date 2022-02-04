@@ -23,6 +23,7 @@ class CommandDefMeta(type):
 
     def triggered(cls, firestarter: str, message: Message):
         fs = firestarter.lower()
+        print(message)
         return next(
             filter(
                 lambda x: any(
