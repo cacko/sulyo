@@ -40,9 +40,11 @@ NEWLINE = [10, 13]
 NOTCOMPATIBLE = ""
 
 def align_whitespace(str: str):
+    return str
     return re.sub(r"\s",chr(WHITESPACE)*2,str)
 
 def get_monospace(char: str):
+    return str
     if is_emoji(char):
         return char
     code = ord(char)
