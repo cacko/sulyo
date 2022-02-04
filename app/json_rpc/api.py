@@ -7,7 +7,7 @@ from jsonrpcclient import request_json
 from app.json_rpc.message import Message
 import json
 from uuid import uuid4
-from app.core.text import to_mono
+from app.core.output import to_mono
 from rich import print_json
 
 

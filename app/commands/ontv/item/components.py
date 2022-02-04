@@ -1,5 +1,4 @@
-from ast import alias
-from app.core.text import Align, Column, render_columns, to_mono
+from app.core.output import Align, Column, TextOutput
 from collections import namedtuple
 from enum import Enum
 
@@ -57,10 +56,10 @@ class ScoreRow:
             )
         else:
             raise NotImplemented
-        res = [render_columns(cols, [row])]
+        res = [TextOutput.renderColumns(cols, [row])]
         if self.row.win:
             res.append(
-                render_columns(
+                TextOutput.renderColumns(
                     [Column(size=sum([x.size for x in cols]), align=Align.CENTER)],
                     [[self.row.win]],
                 )

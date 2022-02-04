@@ -23,5 +23,5 @@ log = logging.getLogger("BOTYO")
 
 from .request import *
 from .cacheable import *
-from .text import to_mono
+from .output import to_mono
 from .time import source_tz, time_hhmm, time_hhmmz

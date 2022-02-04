@@ -11,7 +11,7 @@ from app.core import log
 from datetime import timezone
 from app.core.cacheable import TimeCacheable
 from app.core.models import TimeCache
-from app.core.text import align_whitespace
+from app.core.output import align_whitespace
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass

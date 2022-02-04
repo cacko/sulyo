@@ -1,6 +1,6 @@
 from app.core.decorators import command
 from app.core.models import RenderResult
-from app.core.text import Column, render_columns, Align, to_mono
+from app.core.output import Column, Align, TextOutput
 from app.json_rpc import Context
 
 
@@ -38,7 +38,9 @@ class Help(metaclass=HelpMeta):
             for cmd in sorted(self.app.commands, key=lambda x: x.trigger)
             if cmd.desc
         )
-        return render_columns(columns=columnns, content=content, with_header=True)
+        return TextOutput.renderColumns(
+            columns=columnns, content=content, with_header=True
+        )
 
 
 # @command(trigger="botyo", desc="info")

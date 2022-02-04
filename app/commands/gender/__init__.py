@@ -1,7 +1,7 @@
 from app.commands.gender.predictor import Predictor
 from app.core.decorators import command
 from app.core.models import EmptyResult, RenderResult
-from app.core.text import to_mono
+from app.core.output import to_mono
 from app.json_rpc.context import Context
 from enum import Enum
 from stringcase import titlecase

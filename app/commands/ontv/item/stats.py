@@ -1,8 +1,6 @@
-from tkinter import RIGHT
 from app.commands.ontv.item.livescore_details import ParserDetails
-from app.core import to_mono, log
 from app.commands.ontv.item.models import *
-from app.core.text import Align, Column, render_columns
+from app.core.output import Align, Column, TextOutput
 
 
 class Stats:
@@ -27,7 +25,7 @@ class Stats:
         away_stats: list[GameStatistic] = away.statistics
         if any([not home_stats, not away_stats]):
             return self.empty
-        header = render_columns(
+        header = TextOutput.renderColumns(
             columns=(
                 Column(size=25, align=Align.LEFT),
                 Column(size=25, align=Align.RIGHT),
@@ -45,5 +43,5 @@ class Stats:
         ]
 
         return RenderResult(
-            message=f"{header}\n{render_columns(cols, content)}"
+            message=f"{header}\n{TextOutput.renderColumns(cols, content)}"
         )

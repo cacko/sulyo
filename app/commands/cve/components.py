@@ -1,4 +1,4 @@
-from app.core.text import Align, Column, render_columns, to_mono
+from app.core.output import Align, Column, TextOutput
 from collections import namedtuple
 
 CVEBasics = namedtuple(
@@ -26,4 +26,4 @@ class CVEHeader:
             self.row.severity.upper(),
             self.row.attackVector.upper(),
         )
-        return f"{render_columns(cols, [row])}\n{to_mono(self.row.description)}"
+        return f"{TextOutput.renderColumns(cols, [row])}\n{TextOutput.toMono(self.row.description)}"

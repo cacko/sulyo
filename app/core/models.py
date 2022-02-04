@@ -6,7 +6,7 @@ from random import choice
 
 from emoji import emojize
 
-from app.core.text import to_mono
+from app.core.output import to_mono
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)

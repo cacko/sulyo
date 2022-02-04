@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json, config, Undefined
 from datetime import datetime, timedelta, timezone
 from marshmallow import fields
-from app.core.text import Align, Column, align_whitespace, render_columns
+from app.core.output import Align, Column, TextOutput
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
@@ -86,9 +86,9 @@ class TV:
                     [
                         "\n".join(
                             map(
-                                align_whitespace,
+                                TextOutput.alignWhitespace,
                                 [
-                                    f"{to_mono(t.lower()):>7} {to_mono(v.upper()):<7}"
+                                    f"{TextOutput.toMono(t.lower()):>7} {TextOutput.toMono(v.upper()):<7}"
                                     for t, v in zip(columns, row)
                                 ],
                             )
@@ -105,4 +105,6 @@ class TV:
             values = [
                 [time_hhmmz(ev.time, source=source), ev.name.upper()] for ev in events
             ]
-            return RenderResult(message=render_columns(columns, values, with_header=True))
+            return RenderResult(
+                message=TextOutput.renderColumns(columns, values, with_header=True)
+            )

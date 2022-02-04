@@ -6,7 +6,7 @@ from app.commands.ontv.models import GameNotFound
 from app.core import Request
 from app.commands.ontv.item.models import *
 from app.core.cacheable import TimeCacheable
-from app.core.text import split_with_quotes
+from app.core.output import split_with_quotes
 from app.commands.ontv.item.components import ScoreFormat, ScoreRow
 
 

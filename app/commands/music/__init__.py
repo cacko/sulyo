@@ -1,5 +1,5 @@
 from app.commands.music.albumart import AlbumArt
-from app.core.text import to_mono
+from app.core.output import to_mono
 from app.core.models import EmptyResult, RenderResult
 from app.core.decorators import command
 from app.json_rpc.context import Context, Typing

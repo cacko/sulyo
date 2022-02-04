@@ -1,4 +1,3 @@
-from math import fabs
 from app.commands.ontv.item.livescore_details import ParserDetails
 from app.core import Request
 from app.commands.ontv.item.models import *
@@ -7,7 +6,7 @@ from pathlib import Path
 import tempfile
 from dataclasses_json import dataclass_json, Undefined
 from app.core.match import Match, MatchMethod
-from app.core.text import Align, Column, render_columns
+from app.core.output import Align, Column, TextOutput
 from enum import Enum
 import pickle
 from unidecode import unidecode
@@ -192,7 +191,7 @@ class Player(Cachable):
                 Column(size=10, align=Align.RIGHT),
             ]
             stats = ((s.name, s.value) for s in lineupMember.stats)
-            content = render_columns(columns=columns, content=stats)
+            content = TextOutput.renderColumns(columns=columns, content=stats)
         else:
             content = f"No stats yet"
         return RenderResult(

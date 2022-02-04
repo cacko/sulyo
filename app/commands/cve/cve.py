@@ -2,7 +2,7 @@ from app.commands.cve.models import CVEResponse
 from app.core import Request
 from datetime import datetime, timedelta, timezone
 from app.core.cacheable import TimeCacheable
-from app.core.text import to_mono
+from app.core.output import to_mono
 from .components import CVEHeader
 from stringcase import alphanumcase
 from app.core import log

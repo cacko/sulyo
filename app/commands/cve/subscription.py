@@ -2,7 +2,7 @@ from app.core.cacheable import Cachable
 from app.core.models import RenderResult
 from app.scheduler import Scheduler
 from .components import CVEHeader
-from app.core.text import to_mono
+from app.core.output import to_mono
 from hashlib import blake2b
 from stringcase import alphanumcase
 from .models import *

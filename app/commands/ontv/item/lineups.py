@@ -1,6 +1,6 @@
 from app.commands.ontv.item.livescore_details import ParserDetails
 from app.commands.ontv.item.models import *
-from app.core.text import Align, Column, render_columns
+from app.core.output import Align, Column, TextOutput
 from app.core import log
 
 
@@ -41,13 +41,13 @@ class Lineups:
                 )
                 for h, a in zip(home_starting, away_starting)
             ]
-            header = render_columns(
+            header = TextOutput.renderColumns(
                 (Column(size=22, align=Align.LEFT), Column(size=22, align=Align.RIGHT)),
                 [(home.name.upper(), away.name.upper())],
             )
             return RenderResult(
                 message="\n".join(
-                    [header, render_columns(cols, rows)]
+                    [header, TextOutput.renderColumns(cols, rows)]
                 )
             )
         except Exception as e:

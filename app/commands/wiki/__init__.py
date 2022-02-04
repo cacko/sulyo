@@ -4,7 +4,7 @@ import wikipedia
 from wikipedia.exceptions import DisambiguationError
 from app.core.decorators import command
 from app.core.models import EmptyResult
-from app.core.text import to_mono
+from app.core.output import to_mono
 from app.json_rpc.context import Context
 
 
