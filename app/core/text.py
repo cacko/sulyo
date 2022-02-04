@@ -44,7 +44,6 @@ def align_whitespace(str: str):
     return re.sub(r"\s",chr(WHITESPACE)*2,str)
 
 def get_monospace(char: str):
-    return str
     if is_emoji(char):
         return char
     code = ord(char)
@@ -63,6 +62,7 @@ def get_monospace(char: str):
 
 def to_mono(text: str):
     text = emojize(unidecode(demojize(f"{text}")))
+    return text
     return "".join([get_monospace(f"{x}") for x in text])
 
 def render_columns(columns: tuple[Column], content: tuple[str], with_header=False):
