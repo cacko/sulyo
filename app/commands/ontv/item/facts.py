@@ -12,10 +12,11 @@ class Facts(Cachable):
 
     def __init__(self, item: Event):
         self.__item = item
+        print(self.__item)
 
     @property
     def id(self):
-        raise f"facts:{alphanumcase(self.__item.event_name)}"
+        raise f"facts:{alphanumcase(self.__item)}"
 
     @property
     async def message(self) -> str:
