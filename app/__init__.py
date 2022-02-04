@@ -1,6 +1,6 @@
 import time
 from dataclasses_json import dataclass_json
-from app.json_rpc.message import JunkMessage, NoCommand
+from app.json_rpc.message import JunkMessage, Message, NoCommand
 from app.scheduler import Scheduler
 from app.core.models import Config
 from app.core.match import Match
@@ -21,12 +21,13 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 class CommandDefMeta(type):
     registered = []
 
-    def triggered(cls, firestarter: str):
+    def triggered(cls, firestarter: str, message: Message):
         fs = firestarter.lower()
         return next(
             filter(
                 lambda x: any(
                     [
+                        x.trigger.startswith("+") and x.trigger != message.source,
                         len(x.trigger) == 2 and fs == x.trigger.lower(),
                         len(fs) > 2 and x.trigger.lower().startswith(fs),
                     ]
@@ -140,10 +141,7 @@ class App(object, metaclass=AppMeta):
                         continue
                     trigger, args = [*msg.split(" ", 1), ""][:2]
                     
-                    if trigger.startswith("+") and trigger != message.source:
-                        continue
-
-                    command = CommandDef.triggered(trigger)
+                    command = CommandDef.triggered(trigger, message)
                     if not command:
                         continue
                     context = Context(
