@@ -191,7 +191,7 @@ class Player(Cachable):
                 Column(size=10, align=Align.RIGHT),
             ]
             stats = ((s.name, s.value) for s in lineupMember.stats)
-            content = TextOutput.renderColumns(columns=columns, content=stats)
+            content = TextOutput.renderColumns(cols=columns, content=stats)
         else:
             content = f"No stats yet"
         return RenderResult(
