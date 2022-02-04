@@ -127,3 +127,6 @@ class TextOutput(Output):
 
 def to_mono(text):
     return TextOutput.toMono(text)
+
+def align_whitespace(text):
+    return TextOutput.alignWhitespace(text)
