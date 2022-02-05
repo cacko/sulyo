@@ -21,6 +21,11 @@ tasks:
     cmds:
       - ssh $REMOTE_HOST 'source ~/.zshrc;journalctl --user -u botyo -f' | ccze -A
 
+  start:
+    desc: start the service
+    cmds: 
+      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user start botyo'
+
   restart:
     desc: restart the service
     cmds: 
@@ -62,3 +67,10 @@ tasks:
       - task: pull
       - task: install
       - task: restart
+
+  run:
+    desc: run the server
+    cmds:
+      - source ~/.zshrc
+      - poetry run python -m app
+  
