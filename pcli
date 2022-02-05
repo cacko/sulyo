@@ -1,5 +1,0 @@
-#!/usr/bin/zsh
-export PATH="/home/jago/.pyenv/plugins/pyenv-virtualenv/shims:/home/jago/.pyenv/shims:/home/jago/.pyenv/bin:/home/jago/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/games"
-eval "$(direnv hook zsh)"
-cd ~/botyo/
-exec poetry $@
