@@ -71,6 +71,7 @@ tasks:
   run:
     desc: run the server
     cmds:
-      - source ~/.zshrc
+      - export PATH="/home/jago/.pyenv/plugins/pyenv-virtualenv/shims:/home/jago/.pyenv/shims:/home/jago/.pyenv/bin:/home/jago/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/games"
+      - eval "$(direnv hook zsh)"
       - poetry run python -m app
   
