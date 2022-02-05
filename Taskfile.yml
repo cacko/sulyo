@@ -52,7 +52,7 @@ tasks:
   install:
     desc: calls poetry install and npm ci
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd  ~/botyo;poetry install'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd ~/botyo;poetry install'
 
   deploy:
     desc: shortcut for stop -> push -> pull -> restart
