@@ -71,7 +71,7 @@ tasks:
   run:
     desc: run the server
     cmds:
-      - export PATH="/home/jago/.pyenv/plugins/pyenv-virtualenv/shims:/home/jago/.pyenv/shims:/home/jago/.pyenv/bin:/home/jago/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/games"
+      - export SHELL=/usr/bin/zsh
       - source $HOME/.zshrc
       - poetry run python -m app
   
