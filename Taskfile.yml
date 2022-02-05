@@ -71,7 +71,6 @@ tasks:
   run:
     desc: run the server
     cmds:
-      - export SHELL=/usr/bin/zsh
-      - source $HOME/.zshrc
+      - echo $SHELL
       - poetry run python -m app
   
