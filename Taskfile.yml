@@ -19,28 +19,29 @@ tasks:
   logs:
     desc: monitor logs
     cmds:
-      - ./cli -l | ccze -A
+      - ssh $REMOTE_HOST 'source ~/.zshrc;journalctl --user -u botyo -f' | ccze -A
 
   restart:
     desc: restart the service
     cmds: 
-      - ./cli -r
+      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user restart botyo'
 
   stop:
     desc: stop the server
     cmds:
-      - ./cli -k
+      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user stop botyo'
   
   push:
     desc: commit and pushes current changes
     cmds:
-      - git add . 
-      - ./cli -c
+      - git add .  2>&1 > /dev/null
+      - git commit -am "$(curl -s https://commit.cacko.net/index.txt)" 2>&1 > /dev/null
+      - git push  2>&1 > /dev/null
 
   pull:
     desc: pulls from git
     cmds:
-      - ./cli -p
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd ~/botyo;git reset --hard;git pull'
 
   pp:
     desc: push and pull
@@ -51,7 +52,7 @@ tasks:
   install:
     desc: calls poetry install and npm ci
     cmds:
-      - ./cli -i
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd  ~/botyo;poetry install'
 
   deploy:
     desc: shortcut for stop -> push -> pull -> restart

@@ -137,10 +137,10 @@ class App(object, metaclass=AppMeta):
                     continue
                 try:
                     msg = message.message
-                    if not msg:
+                    if not msg or not msg.startswith("/"):
                         continue
-                    trigger, args = [*msg.split(" ", 1), ""][:2]
-                    
+                    trigger, args = [*msg.lstrip("/").split(" ", 1), ""][:2]
+
                     command = CommandDef.triggered(trigger, message)
                     if not command:
                         continue
