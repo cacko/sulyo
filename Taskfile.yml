@@ -1,6 +1,6 @@
 # https://taskfile.dev
 
-version: '3'
+version: "3"
 
 vars:
   GREETING: Hello, World!
@@ -23,19 +23,19 @@ tasks:
 
   start:
     desc: start the service
-    cmds: 
+    cmds:
       - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user start botyo'
 
   restart:
     desc: restart the service
-    cmds: 
+    cmds:
       - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user restart botyo'
 
   stop:
     desc: stop the server
     cmds:
       - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user stop botyo'
-  
+
   push:
     desc: commit and pushes current changes
     cmds:
@@ -61,7 +61,7 @@ tasks:
 
   deploy:
     desc: shortcut for stop -> push -> pull -> restart
-    cmds: 
+    cmds:
       - task: stop
       - task: push
       - task: pull
@@ -72,5 +72,4 @@ tasks:
     desc: run the server
     cmds:
       - export PATH="/home/jago/.pyenv/plugins/pyenv-virtualenv/shims:/home/jago/.pyenv/shims:/home/jago/.pyenv/bin:/home/jago/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/games"
-      - direnv exec poetry run python -m app
-  
+      - direnv exec . poetry run python -m app
