@@ -39,9 +39,9 @@ tasks:
   push:
     desc: commit and pushes current changes
     cmds:
-      - git add .  2>&1 > /dev/null
-      - git commit -am "$(curl -s https://commit.cacko.net/index.txt)" 2>&1 > /dev/null
-      - git push  2>&1 > /dev/null
+      - git add .  || true
+      - git commit -am "$(curl -s https://commit.cacko.net/index.txt)" || true
+      - git push  || true
 
   pull:
     desc: pulls from git
