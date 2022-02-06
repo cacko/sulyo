@@ -10,6 +10,8 @@ class CacheableMeta(type):
     def hash_key(cls):
         return f"{cls.__name__}"
 
+
+
 class Cachable(object, metaclass=CacheableMeta):
 
     _struct = None

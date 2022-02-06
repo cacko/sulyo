@@ -26,7 +26,7 @@ class Stats:
         if any([not home_stats, not away_stats]):
             return self.empty
         header = TextOutput.renderColumns(
-            columns=(
+            cols=(
                 Column(size=25, align=Align.LEFT),
                 Column(size=25, align=Align.RIGHT),
             ),
