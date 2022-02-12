@@ -1,63 +1,63 @@
-from app.core.output import to_mono
-from app.core.models import EmptyResult, RenderResult
-from app.core.decorators import command
-from app.json_rpc.context import Context, Typing
-from .traceroute import Traceroute
-from .dig import Dig
-from .whois import WhoIs
-from .tcptraceroute import TcpTraceroute
-from argparse import ArgumentTypeError
+# from app.core.output import to_mono
+# from app.core.models import EmptyResult, RenderResult
+# from app.core.decorators import command
+# from app.json_rpc.context import Context, Typing
+# from .traceroute import Traceroute
+# from .dig import Dig
+# from .whois import WhoIs
+# from .tcptraceroute import TcpTraceroute
+# from argparse import ArgumentTypeError
 
 
-@command(trigger="traceroute", desc="dumps traceroute to given location")
-async def traceroute_command(context: Context):
-    try:
-        async with Typing(context) as ctx:
-            traceroute = Traceroute(ctx.query)
-            res = traceroute.response
-            if not res:
-                await ctx.send(EmptyResult())
-            else:
-                await ctx.send(response=res)
-    except ArgumentTypeError:
-        await context.send(RenderResult(message=to_mono("are you stupid?")))
+# @command(trigger="traceroute", desc="dumps traceroute to given location")
+# async def traceroute_command(context: Context):
+#     try:
+#         async with Typing(context) as ctx:
+#             traceroute = Traceroute(ctx.query)
+#             res = traceroute.response
+#             if not res:
+#                 await ctx.send(EmptyResult())
+#             else:
+#                 await ctx.send(response=res)
+#     except ArgumentTypeError:
+#         await context.send(RenderResult(message=to_mono("are you stupid?")))
 
 
-@command(trigger="tcptraceroute", desc="dumps tcptraceroute to given location")
-async def tcptraceroute_command(context: Context):
-    try:
-        async with Typing(context) as ctx:
-            traceroute = TcpTraceroute(ctx.query)
-            res = traceroute.response
-            if not res:
-                await ctx.send(EmptyResult())
-            else:
-                await ctx.send(response=res)
-    except ArgumentTypeError:
-        await context.send(RenderResult(message=to_mono("are you stupid?")))
+# @command(trigger="tcptraceroute", desc="dumps tcptraceroute to given location")
+# async def tcptraceroute_command(context: Context):
+#     try:
+#         async with Typing(context) as ctx:
+#             traceroute = TcpTraceroute(ctx.query)
+#             res = traceroute.response
+#             if not res:
+#                 await ctx.send(EmptyResult())
+#             else:
+#                 await ctx.send(response=res)
+#     except ArgumentTypeError:
+#         await context.send(RenderResult(message=to_mono("are you stupid?")))
 
 
-@command(trigger="dig", desc="dumps dig to given location")
-async def dig_command(context: Context):
-    try:
-        async with Typing(context) as ctx:
-            dig = Dig(ctx.query)
-            res = dig.response
-            if not res:
-                await ctx.send(EmptyResult())
-            await ctx.send(res)
-    except ArgumentTypeError:
-        await context.send(RenderResult(message=to_mono("are you stupid?")))
+# @command(trigger="dig", desc="dumps dig to given location")
+# async def dig_command(context: Context):
+#     try:
+#         async with Typing(context) as ctx:
+#             dig = Dig(ctx.query)
+#             res = dig.response
+#             if not res:
+#                 await ctx.send(EmptyResult())
+#             await ctx.send(res)
+#     except ArgumentTypeError:
+#         await context.send(RenderResult(message=to_mono("are you stupid?")))
 
 
-@command(trigger="whois", desc="dumps whois to given domain")
-async def whois_command(context: Context):
-    try:
-        async with Typing(context) as ctx:
-            whois = WhoIs(ctx.query)
-            res = whois.response
-            if not res:
-                await ctx.send(EmptyResult())
-            await ctx.send(res)
-    except ArgumentTypeError:
-        await context.send(RenderResult(message=to_mono("are you stupid?")))
+# @command(trigger="whois", desc="dumps whois to given domain")
+# async def whois_command(context: Context):
+#     try:
+#         async with Typing(context) as ctx:
+#             whois = WhoIs(ctx.query)
+#             res = whois.response
+#             if not res:
+#                 await ctx.send(EmptyResult())
+#             await ctx.send(res)
+#     except ArgumentTypeError:
+#         await context.send(RenderResult(message=to_mono("are you stupid?")))
