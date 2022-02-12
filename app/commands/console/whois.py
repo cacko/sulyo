@@ -4,10 +4,9 @@ from argparse import ArgumentTypeError
 
 
 class WhoIs(Base):
-    
-    command = "whois"
-    
+
+    command = "console/whois"
+
     def validate(self):
         if not any([validators.domain(x) for x in self.args]):
             raise ArgumentTypeError
-

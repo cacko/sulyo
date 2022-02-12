@@ -5,7 +5,7 @@ from .base import Base
 
 class Dig(Base):
 
-    command = "dig"
+    command = "console/dig"
 
     def validate(self):
         if not any([validators.domain(x) for x in self.args]):

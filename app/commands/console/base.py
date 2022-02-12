@@ -1,10 +1,10 @@
-from subprocess import Popen, PIPE, STDOUT
-import os
+from app.core.models import RenderResult
+from app.core import Request
 
 
 class BaseMeta(type):
     @property
-    def executable(cls):
+    def apiurl(cls):
         return cls.command
 
 
@@ -17,27 +17,13 @@ class Base(object, metaclass=BaseMeta):
         self.validate()
 
     def validate(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     @property
-    def environment(self):
-        return dict(
-            os.environ,
-            PATH=f"/home/jago/.pyenv/plugins/pyenv-virtualenv/shims:/home/jago/.pyenv/shims:/home/jago/.pyenv/bin:/home/jago/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/games",
-        )
+    def subPath(self) -> str:
+        return " ".join(self.args)
 
     @property
-    def text(self) -> str:
-        result = []
-        with Popen(
-            [self.__class__.executable, *self.args],
-            stdout=PIPE,
-            stderr=STDOUT,
-            env=self.environment,
-        ) as p:
-            for line in iter(p.stdout.readline, b""):
-                line = line.decode().strip()
-                result.append(line)
-            if p.returncode:
-                return None
-        return "\n".join(result)
+    async def response(self) -> RenderResult:
+        url = f"{self.__class__.apiurl}/{self.subPath}"
+        return await Request(url).fetch()

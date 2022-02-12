@@ -26,10 +26,30 @@ __all__ = [
     "cvelistsubscriptions_command",
 ]
 
-from .avatar import *
-from .logo import *
-from .wiki import *
-from .music import *
-from .ontv.ontv import *
-from .console import *
-from .cve import *
+from .avatar import avatar_command
+from .logo import logo_command
+from .wiki import wiki_command
+from .music import song_command, lyrics_command, albumart_command
+from .ontv.ontv import (
+    stats_command,
+    tv_command,
+    livescore_command,
+    subscribe_command,
+    unsubscribe_command,
+    competitions_command,
+    lineups_command,
+    facts_command,
+    player_command
+)
+from .console import (
+    whois_command,
+    traceroute_command,
+    tcptraceroute_command,
+    dig_command
+)
+from .cve import (
+    cve_command,
+    cvelistsubscriptions_command,
+    cvesubscribe_command,
+    cveunsubscribe_command
+)

@@ -10,7 +10,8 @@ class Context:
     source: str = None
 
     def __init__(
-        self, api: JsonRpcAPI, group: str, query: str = None, source: str = None
+        self, api: JsonRpcAPI, group: str, query:
+        str = None, source: str = None
     ):
         self.api = api
         self.group = group
@@ -34,6 +35,6 @@ class Typing:
     async def __aenter__(self) -> Context:
         await self.context.api.typing(receiver=self.context.group)
         return self.context
-    
+
     async def __aexit__(self, *args):
         await self.context.api.typing(receiver=self.context.group, stop=True)

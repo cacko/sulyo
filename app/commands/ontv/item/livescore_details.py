@@ -1,5 +1,4 @@
 from datetime import datetime
-from hashlib import blake2b
 from app.commands.ontv.item.models import *
 from app.commands.ontv.models import GameNotFound
 from app.core import Request
@@ -10,6 +9,7 @@ from unidecode import unidecode
 from app.core import log
 from datetime import timezone
 from app.core.cacheable import TimeCacheable
+from app.core.hash import idhash
 from app.core.models import TimeCache
 from app.core.output import align_whitespace
 
@@ -52,9 +52,7 @@ class ParserDetails(TimeCacheable):
     @property
     def id(self):
         if not self.__id:
-            h = blake2b(digest_size=20)
-            h.update(self.__url.encode())
-            self.__id = h.hexdigest()
+            self.__id = idhash(self.__url)
         return self.__id
 
     @property

@@ -4,7 +4,6 @@ from thefuzz import fuzz
 import re
 from stringcase import snakecase
 from enum import Enum
-from app.core import log
 
 
 class MatchMeta(type):
@@ -13,7 +12,8 @@ class MatchMeta(type):
     def __call__(cls, *args, **kwargs):
         id = hash(repr(kwargs.get("haystack")))
         if id not in cls._instances:
-            cls._instances[id] = super(MatchMeta, cls).__call__(*args, **kwargs)
+            cls._instances[id] = super(
+                MatchMeta, cls).__call__(*args, **kwargs)
         return cls._instances[id]
 
 
@@ -38,14 +38,15 @@ class Match(object, metaclass=MatchMeta):
 
     def fuzzy(self, needle: dataclass_json) -> list:
         cacheKey = snakecase(f"{needle} {'_'.join(needle.to_dict().values())}")
-        if not cacheKey in self.cache:
+        if cacheKey not in self.cache:
             self.cache[cacheKey] = [
                 *reversed(
                     [
                         *map(
                             lambda h: h.pop(),
                             sorted(
-                                [[ratio, hs] for hs, ratio in self.__ratios(needle)],
+                                [[ratio, hs]
+                                    for hs, ratio in self.__ratios(needle)],
                                 key=lambda x: x[0],
                             ),
                         )

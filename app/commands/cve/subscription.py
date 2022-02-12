@@ -1,9 +1,9 @@
 from app.core.cacheable import Cachable
+from app.core.hash import idhash
 from app.core.models import RenderResult
 from app.scheduler import Scheduler
 from .components import CVEHeader
 from app.core.output import to_mono
-from hashlib import blake2b
 from stringcase import alphanumcase
 from .models import *
 from .cve import CVE
@@ -22,9 +22,7 @@ class SubscribtionCache(Cachable):
     @property
     def id(self):
         if not self.__id:
-            h = blake2b(digest_size=20)
-            h.update(self.__query.encode())
-            self.__id = h.hexdigest()
+            self.__id = idhash(self.__query)
         return self.__id
 
     async def fetch(self, ignoreCache=False) -> CVEResponse:
@@ -79,13 +77,12 @@ class SubscriptionMeta(type):
     def groupJobs(cls, groupID: list):
         grouphash = cls.getGroupId(groupID)
         return list(
-            filter(lambda g: g.id.startswith(f"{grouphash}"), Scheduler.get_jobs())
+            filter(lambda g: g.id.startswith(
+                f"{grouphash}"), Scheduler.get_jobs())
         )
 
     def getGroupId(cls, groupdID: list):
-        h = blake2b(digest_size=20)
-        h.update(f"{cls.__module__}{groupdID}".encode())
-        return h.hexdigest()
+        return idhash(f"{cls.__module__}{groupdID}")
 
 
 class Subscription(metaclass=SubscriptionMeta):

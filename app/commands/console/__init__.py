@@ -14,11 +14,11 @@ async def traceroute_command(context: Context):
     try:
         async with Typing(context) as ctx:
             traceroute = Traceroute(ctx.query)
-            text = traceroute.text
-            if not text:
+            res = traceroute.response
+            if not res:
                 await ctx.send(EmptyResult())
             else:
-                await ctx.send(RenderResult(message=text))
+                await ctx.send(response=res)
     except ArgumentTypeError:
         await context.send(RenderResult(message=to_mono("are you stupid?")))
 
@@ -28,11 +28,11 @@ async def tcptraceroute_command(context: Context):
     try:
         async with Typing(context) as ctx:
             traceroute = TcpTraceroute(ctx.query)
-            text = traceroute.text
-            if not text:
+            res = traceroute.response
+            if not res:
                 await ctx.send(EmptyResult())
-                return
-            await ctx.send(RenderResult(message=text))
+            else:
+                await ctx.send(response=res)
     except ArgumentTypeError:
         await context.send(RenderResult(message=to_mono("are you stupid?")))
 
@@ -42,11 +42,10 @@ async def dig_command(context: Context):
     try:
         async with Typing(context) as ctx:
             dig = Dig(ctx.query)
-            text = dig.text
-            if not text:
+            res = dig.response
+            if not res:
                 await ctx.send(EmptyResult())
-                return
-            await ctx.send(RenderResult(message=text))
+            await ctx.send(res)
     except ArgumentTypeError:
         await context.send(RenderResult(message=to_mono("are you stupid?")))
 
@@ -56,10 +55,9 @@ async def whois_command(context: Context):
     try:
         async with Typing(context) as ctx:
             whois = WhoIs(ctx.query)
-            text = whois.text
-            if not text:
+            res = whois.response
+            if not res:
                 await ctx.send(EmptyResult())
-                return
-            await ctx.send(RenderResult(message=text))
+            await ctx.send(res)
     except ArgumentTypeError:
         await context.send(RenderResult(message=to_mono("are you stupid?")))

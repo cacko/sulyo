@@ -11,7 +11,6 @@ class CacheableMeta(type):
         return f"{cls.__name__}"
 
 
-
 class Cachable(object, metaclass=CacheableMeta):
 
     _struct = None
@@ -36,12 +35,11 @@ class Cachable(object, metaclass=CacheableMeta):
 
     @property
     def id(self):
-        raise NotImplemented()
+        raise NotImplementedError
 
     @property
     def isCached(self) -> bool:
         return Storage.exists(self.store_key) == 1
-
 
     @property
     def store_key(self):
@@ -60,7 +58,8 @@ class TimeCacheable(Cachable):
         return None
 
     def tocache(self, res) -> TimeCache:
-        timecache = TimeCache(timestamp=datetime.now(tz=timezone.utc), struct=res)
+        timecache = TimeCache(timestamp=datetime.now(
+            tz=timezone.utc), struct=res)
         Storage.set(self.store_key, pickle.dumps(timecache))
         Storage.persist(self.store_key)
         return timecache

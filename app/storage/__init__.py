@@ -35,7 +35,8 @@ class Storage(object, metaclass=StorageMeta):
         return cls._instance._redis.exists(*names)
 
     @classmethod
-    def hscan_iter(cls, name: str, match: str = None, count: int = None) -> Iterator:
+    def hscan_iter(cls, name: str,
+                   match: str = None, count: int = None) -> Iterator:
         if cls._instance.bypass:
             return False
         return cls._instance._redis.hscan_iter(name, match, count)

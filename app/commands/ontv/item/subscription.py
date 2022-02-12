@@ -5,10 +5,10 @@ from app.commands.ontv.item.livescore_details import ParserDetails
 from app.commands.ontv.item.models import Response, Event, EventStatus, GameStatus
 from app.commands.ontv.item.player import Player
 from app.core import Request, Cachable, to_mono, log, RenderResult
+from app.core.hash import idhash
 from app.scheduler import Scheduler
 import re
 from enum import Enum
-from hashlib import blake2b
 
 
 class JobPrefix(Enum):
@@ -30,9 +30,7 @@ class SubscribtionCache(Cachable):
     @property
     def id(self):
         if not self.__id:
-            h = blake2b(digest_size=20)
-            h.update(self.__url.encode())
-            self.__id = h.hexdigest()
+            self.__id = idhash(self.__url)
         return self.__id
 
     async def fetch(self) -> Response:
@@ -64,7 +62,7 @@ class SubscribtionCache(Cachable):
             Player.store(fresh.game)
         if len(self.__cached.events) < len(fresh.events):
             self._struct.game.events = (await self.content).events[
-                len(self.__cached.events) :
+                len(self.__cached.events):
             ]
             return self._struct
         return None
@@ -88,13 +86,12 @@ class SubscriptionMeta(type):
     def groupJobs(cls, groupID: list):
         grouphash = cls.getGroupId(groupID)
         return list(
-            filter(lambda g: g.id.startswith(f"{grouphash}"), Scheduler.get_jobs())
+            filter(lambda g: g.id.startswith(
+                f"{grouphash}"), Scheduler.get_jobs())
         )
 
     def getGroupId(cls, groupdID: list):
-        h = blake2b(digest_size=20)
-        h.update(f"{cls.__module__}{groupdID}".encode())
-        return h.hexdigest()
+        return idhash(f"{cls.__module__}{groupdID}")
 
 
 class Subscription(metaclass=SubscriptionMeta):

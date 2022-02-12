@@ -21,7 +21,6 @@ from app.core.decorators import command
 from app.core.match import Match, MatchMethod
 from app.core.models import EmptyResult
 from app.json_rpc.context import Context, Typing
-from app.scheduler import Scheduler
 
 
 @dataclass

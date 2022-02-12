@@ -1,29 +1,19 @@
-[livescore]
-leagues = [
-  8,
-  25,
-  17,
-  11,
-  13,
-  7,
-  6265,
-  163,
-  350,
-  5668,
-  573,
-  5421,
-  7016,
-  7685,
-  572,
-  15,
-  167,
-  9,
-  20,
-  1,
-  613,
-  605,
-  27,
-  41,
-  6987,
-  37
+[redis]
+url = "redis://192.168.0.106/5"
+
+[signal]
+groups = [
+  "iUNWO08W125MQZhNappyeRyYnM5nubW47/Lw1j3nX8Q=",
+  "9cC95M1QQANjS1IoIyIlB6dOSxq/A/PdgPuVeRu9yhU=",
 ]
+host = "/Users/jago/signal.sock"
+port = 7583
+
+[znayko]
+client = "BOTYO"
+host = "192.168.0.105"
+phone = "+447479303304"
+port = 7777
+
+[cacheable]
+path = "./cache"
