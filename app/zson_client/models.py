@@ -99,7 +99,7 @@ class ZSONResponse(ZSONMessage):
 class ZSONRequest(ZSONMessage):
     source: Optional[str] = None
     query: Optional[str] = None
-    utf8mono: Optional[bool] = True
+    utf8mono: Optional[bool] = False
     type: ZSONType = ZSONType.REQUEST
 
 
