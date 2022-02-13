@@ -16,6 +16,7 @@ import asyncio
 
 DEFAULT_LIMIT = 2 ** 32
 SOH = b"\x07"
+BYTEORDER = "little"
 
 
 class UnknownClientException(Exception):
@@ -96,7 +97,7 @@ class Connection(object, metaclass=ConnectionMeta):
     @property
     async def __partSize(self) -> int:
         data = await self.__reader.readexactly(4)
-        return int.from_bytes(data, byteorder='big', signed=False)
+        return int.from_bytes(data, byteorder=BYTEORDER, signed=False)
 
     async def __handleAttachment(self, name) -> Path:
         cache_path = Path(Config.cachable.path)
@@ -134,7 +135,7 @@ class Connection(object, metaclass=ConnectionMeta):
             log.debug(f">> SEND {req}")
             data = req.encode()
             size = len(data).to_bytes(
-                4, byteorder='big', signed=False
+                4, byteorder=BYTEORDER, signed=False
             )
             self.__writer.write(SOH)
             self.__writer.write(size)
