@@ -118,3 +118,4 @@ instance/
 *.sqlite*
 .envrc
 cache/
+app/settings.toml
