@@ -107,11 +107,11 @@ class Connection(object, metaclass=ConnectionMeta):
         with p.open("wb") as f:
             size = await self.__partSize
             log.debug(f">> ATTACHMENT size={size}")
-            while size:
-                size = max(0, size - CHUNKSIZE)
-                chunk = min(1024, CHUNKSIZE)
-                data = await self.__reader.read(chunk)
-                f.write(data)
+            while True:
+                chunk = await self.__reader.read(CHUNKSIZE)
+                if not chunk:
+                    break
+                f.write(chunk)
         return p
 
     async def connect(self, reconnect=False):
