@@ -88,9 +88,10 @@ class Connection(object, metaclass=ConnectionMeta):
                             response.attachment.path = download
                         log.debug(">> RESPONSE PROCESSED")
                         yield response
-                # except IncompleteReadError:
-                #     # self.__registered = False
-                #     await self.connect(reconnect=True)
+                except IncompleteReadError:
+                    continue
+                    # self.__registered = False
+                    # await self.connect(reconnect=True)
         except Exception as e:
             raise ReceiveMessagesError(e)
 
