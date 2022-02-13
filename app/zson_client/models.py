@@ -85,7 +85,7 @@ class ZSONResponse(ZSONMessage):
     def result(self) -> RenderResult:
         attachment_path = None
         if self.attachment is not None and self.attachment.path.exists():
-            attachment_path = self.attachment.path.as_posix()
+            attachment_path = self.attachment.path.absolute().as_posix()
         if all([not self.message, not attachment_path]):
             return ErrorResult()
         return RenderResult(
