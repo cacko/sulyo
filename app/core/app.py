@@ -126,7 +126,6 @@ class App(object, metaclass=AppMeta):
                 try:
                     if not response:
                         continue
-                    log.debug(response)
                     if Connection.id != response.client:
                         log.warning(
                             f"Wrong clientId response {response.client}")
