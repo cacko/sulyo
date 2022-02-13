@@ -88,7 +88,7 @@ class App(object, metaclass=AppMeta):
             c.cancel()
 
     async def _produce_signal(self, name: int) -> None:
-        log.info(f"[Botyo] Producer #{name} started")
+        log.debug(f"[Botyo] Producer #{name} started")
         try:
             async for message in self.api.receive():
                 group = message.group
@@ -120,13 +120,13 @@ class App(object, metaclass=AppMeta):
             raise JsonRpcApiError(f"Cannot receive messages: {e}")
 
     async def _product_znayko(self, name: int) -> None:
-        log.info(f"[Znayko] Producer #{name} started")
+        log.debug(f"[Znayko] Producer #{name} started")
         try:
             async for response in Connection.receive():
                 try:
                     if not response:
                         continue
-                    log.info(response)
+                    log.debug(response)
                     if Connection.id != response.client:
                         log.warning(
                             f"Wrong clientId response {response.client}")
