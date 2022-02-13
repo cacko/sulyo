@@ -13,6 +13,7 @@ toml = "^0.10.2"
 rich = "^11.0.0"
 validators = "^0.18.2"
 requests = "^2.27.1"
+emoji = "^1.6.3"
 
 [tool.poetry.dev-dependencies]
 pydebug = "^1.0.3"
