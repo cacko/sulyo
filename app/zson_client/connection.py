@@ -15,7 +15,7 @@ from pathlib import Path
 import asyncio
 
 DEFAULT_LIMIT = 2 ** 32
-SOH = b"\x01"
+SOH = b"\x07"
 
 
 class UnknownClientException(Exception):
@@ -61,6 +61,7 @@ class Connection(object, metaclass=ConnectionMeta):
             while True:
                 try:
                     await self.__reader.readuntil(SOH)
+                    log.debug(">> RECEIVED BELL")
                     size = await self.__partSize
                     if not size:
                         continue
