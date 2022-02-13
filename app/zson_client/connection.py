@@ -17,7 +17,7 @@ import asyncio
 DEFAULT_LIMIT = 2 ** 25
 SOH = b"\x07"
 BYTEORDER = "little"
-CHUNKSIZE = 2 ** 16
+CHUNKSIZE = 2 ** 13
 
 
 class UnknownClientException(Exception):
@@ -107,11 +107,11 @@ class Connection(object, metaclass=ConnectionMeta):
         with p.open("wb") as f:
             size = await self.__partSize
             log.debug(f">> ATTACHMENT size={size}")
-            while True:
-                chunk = await self.__reader.read(CHUNKSIZE)
-                if not chunk:
-                    break
+            while size:
+                to_read = CHUNKSIZE if size > CHUNKSIZE else size
+                chunk = await self.__reader.read(to_read)
                 f.write(chunk)
+                size -= to_read
         return p
 
     async def connect(self, reconnect=False):
