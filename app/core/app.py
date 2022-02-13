@@ -1,10 +1,11 @@
 import time
-from dataclasses_json import dataclass_json
-from app.json_rpc.message import JunkMessage, Message, Method, NoCommand
+from app.core.models import RenderResult
+from app.json_rpc.message import (
+    JunkMessage,
+    NoCommand
+)
 from app.core.config import Config
 from app.core.match import Match
-from dataclasses import dataclass
-from typing import Callable, Optional
 import asyncio
 from app.json_rpc import (
     JsonRpcAPI,
@@ -14,56 +15,11 @@ from app.json_rpc import (
 )
 from app import log
 from app.zson_client.connection import Connection
-from app.zson_client.models import ZSONResponse
-
-
-class CommandDefMeta(type):
-    registered = []
-
-    def triggered(cls, firestarter: str, message: Message):
-        fs = firestarter.lower()
-        return next(
-            filter(
-                lambda x: any(
-                    [
-                        len(x.method.value) == 2 and fs == x.method.value,
-                        len(fs) > 2 and x.method.value.startswith(fs),
-                        len(fs) > 2 and x.method.value.split(
-                            ":")[-1].startswith(fs)
-                    ]
-                ),
-                cls.registered,
-            ),
-            None,
-        )
-
-
-@dataclass_json
-@dataclass
-class CommandDef(metaclass=CommandDefMeta):
-    method: Method
-    handler: Callable
-    desc: Optional[str] = None
-
-
-def parametrized(dec):
-    def layer(*args, **kwargs):
-        def repl(f):
-            return dec(f, *args, **kwargs)
-
-        return repl
-
-    return layer
-
-
-@parametrized
-def command(func, method: Method, desc: str = None):
-    App.register(CommandDef(method=method, handler=func, desc=desc))
-
-    def registrar(*args):
-        return func(*args)
-
-    return registrar
+from app.zson_client.models import (
+    ZSONRequest,
+    ZSONResponse,
+    CommandDef
+)
 
 
 class CommandMatch(Match):
@@ -81,6 +37,7 @@ class AppMeta(type):
         return cls._instance
 
     def register(cls, cmd: CommandDef):
+        log.debug(f">> REGISTER {cmd}")
         cls().commands.append(cmd)
         CommandDef.registered.append(cmd)
 
@@ -135,6 +92,7 @@ class App(object, metaclass=AppMeta):
         try:
             async for message in self.api.receive():
                 group = message.group
+                log.debug(f">> SIGNAL IN {message}")
                 if group not in self.groups:
                     continue
                 try:
@@ -142,8 +100,7 @@ class App(object, metaclass=AppMeta):
                     if not msg or not msg.startswith("/"):
                         continue
                     trigger, args = [*msg.lstrip("/").split(" ", 1), ""][:2]
-
-                    command = CommandDef.triggered(trigger, message)
+                    command = CommandDef.triggered(trigger)
                     if not command:
                         continue
                     context = Context(
@@ -173,6 +130,10 @@ class App(object, metaclass=AppMeta):
                     if Connection.id != response.client:
                         log.warning(
                             f"Wrong clientId response {response.client}")
+                        continue
+                    if response.method == "login":
+                        for cmd in response.commands:
+                            __class__.register(cmd)
                         continue
                     if response.group not in self.groups:
                         log.warning(
@@ -208,7 +169,15 @@ class App(object, metaclass=AppMeta):
                 await context.respond(command.result)
             elif isinstance(command, CommandDef):
                 log.debug(f">> CONSUME Command {command}")
-                await command.handler(context)
+                if command.response:
+                    await context.respond(RenderResult(
+                        message=command.response
+                    ))
+                else:
+                    await context.request(ZSONRequest(
+                        method=command.method,
+                        query=context.query
+                    ))
         except (JunkMessage, NoCommand) as e:
             log.error(e)
             pass

@@ -5,7 +5,7 @@ from enum import Enum
 from app import log
 
 
-class Method(Enum):
+class RPCMethod(Enum):
     RECEIVE = "receive"
 
 

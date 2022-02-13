@@ -1,2 +1,0 @@
-class GameNotFound(Exception):
-    pass
