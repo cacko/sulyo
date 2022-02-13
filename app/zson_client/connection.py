@@ -62,10 +62,10 @@ class Connection(object, metaclass=ConnectionMeta):
             await self.connect()
             while True:
                 try:
-                    data = await self.__reader.readuntil(SOH)
-                    size = await self.__partSize
-                    if not size or size > DEFAULT_LIMIT:
+                    junk = await self.__reader.readuntil(SOH)
+                    if len(junk) > 1:
                         continue
+                    size = await self.__partSize
                     log.debug(f">> RECEIVE PartSize={size}")
                     data = await self.__reader.readexactly(size)
                     msg_json = data.decode()
