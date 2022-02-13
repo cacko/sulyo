@@ -4,6 +4,7 @@ from app.zson_client.connection import Connection
 from app.zson_client.models import ZSONRequest
 from app import log
 
+
 class Context:
 
     api: JsonRpcAPI = None
@@ -27,7 +28,7 @@ class Context:
         await Connection.send(request)
 
     async def respond(self, response: RenderResult):
-        log.debug(f">> RESPOND {RenderResult}")
+        log.debug(f">> RESPOND {response}")
         await self.api.send(
             receiver=self.group,
             message=response.message,
