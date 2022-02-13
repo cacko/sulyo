@@ -1,5 +1,7 @@
 from app.core.models import RenderResult
 from app.json_rpc.api import JsonRpcAPI
+from app.zson_client.connection import Connection
+from app.zson_client.models import ZSONRequest
 
 
 class Context:
@@ -10,15 +12,21 @@ class Context:
     source: str = None
 
     def __init__(
-        self, api: JsonRpcAPI, group: str, query:
-        str = None, source: str = None
+        self, api: JsonRpcAPI,
+        group: str,
+        query: str = None, source: str = None
     ):
         self.api = api
         self.group = group
         self.query = query
         self.source = source
 
-    async def send(self, response: RenderResult):
+    async def request(self, request: ZSONRequest):
+        request.group = self.group
+        request.source = self.source
+        await Connection.send(request)
+
+    async def respond(self, response: RenderResult):
         await self.api.send(
             receiver=self.group,
             message=response.message,

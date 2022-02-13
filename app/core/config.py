@@ -2,6 +2,7 @@
 from os import environ
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 from dataclasses_json import dataclass_json, Undefined
 import toml
 
@@ -17,7 +18,7 @@ class RedisConfig:
 class SignalConfig:
     groups: list[str]
     host: str
-    port: int
+    port: Optional[int] = None
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)

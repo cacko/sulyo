@@ -11,6 +11,10 @@ tasks:
       - poetry run python -m app
     silent: true
 
+  signalcli:
+    cmds:
+      - signal-cli -a $SIGNAL_ACCOUNT daemon --socket $SIGNAL_SOCKET
+
   redis:
     desc: open redis-cli
     cmds:

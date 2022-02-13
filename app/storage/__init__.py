@@ -1,6 +1,7 @@
 from typing import Iterator
 from redis import StrictRedis
 from redis.client import Pipeline
+from app.core.config import Config
 
 
 class StorageMeta(type):
@@ -15,7 +16,7 @@ class Storage(object, metaclass=StorageMeta):
 
     def __init__(self, app) -> None:
         redis_client = StrictRedis()
-        self._redis = redis_client.from_url(app.config.REDIS_URL)
+        self._redis = redis_client.from_url(Config.redis.url)
 
     def __new__(cls, app, *args, **kwargs):
         if not cls._instance:

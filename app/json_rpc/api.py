@@ -1,29 +1,26 @@
-from typing import Generator, Optional
-from app.core import log
+from typing import Generator
+from app import log
 import asyncio
 from app.json_rpc.message import Message
 import json
 from uuid import uuid4
-from app.core.output import to_mono
-from rich import print_json
+from app.core.config import Config
 
 
 class JsonRpcAPI:
 
     __host: str = None
-    __port: int = None
-    __phone: str = None
     reader = None
     writer = None
 
-    def __init__(self, service_host: str, service_port: int, phone_number: str = ""):
-        self.__host = service_host
-        self.__port = service_port
-        self.__phone = phone_number
+    def __init__(self):
+        self.__host = Config.signal.host
 
     async def receive(self) -> Generator[Message, None, None]:
         try:
-            self.reader, self.writer = await asyncio.open_unix_connection(self.__host)
+            self.reader, self.writer = await asyncio.open_unix_connection(
+                self.__host
+            )
             while True:
                 msg = await self.reader.readline()
                 message = Message.from_dict(json.loads(msg))
@@ -48,7 +45,7 @@ class JsonRpcAPI:
             )
             + "\n"
         )
-        
+
         try:
             self.writer.write(req.encode())
             await self.writer.drain()
@@ -75,7 +72,7 @@ class JsonRpcAPI:
         try:
             self.writer.write(req.encode())
             await self.writer.drain()
-        except:
+        except Exception:
             pass
 
 

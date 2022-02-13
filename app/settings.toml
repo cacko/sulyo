@@ -7,13 +7,12 @@ groups = [
   "9cC95M1QQANjS1IoIyIlB6dOSxq/A/PdgPuVeRu9yhU=",
 ]
 host = "/Users/jago/signal.sock"
-port = 7583
 
 [znayko]
 client = "BOTYO"
-host = "192.168.0.105"
+host = "127.0.0.1"
 phone = "+447479303304"
 port = 7777
 
-[cacheable]
+[cachable]
 path = "./cache"

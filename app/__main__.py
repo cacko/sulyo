@@ -7,7 +7,12 @@ try:
     from app.storage import Storage
     Storage.register(app)
 
-    log.info("Init done")
+    from app.commands.wiki import bp as wiki_bp
+    from app.commands.avatar import bp as avatar_bp
+
+    avatar_bp.register(app)
+    wiki_bp.register(app)
+
     app.start()
 except KeyboardInterrupt:
     import sys

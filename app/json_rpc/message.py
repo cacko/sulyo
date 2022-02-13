@@ -1,10 +1,8 @@
-from ast import Str
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Optional
 from dataclasses_json import dataclass_json, Undefined
-from random import choice
 from enum import Enum
+from app import log
 
 
 class Method(Enum):
@@ -79,29 +77,34 @@ class Message:
 
     @property
     def group(self) -> str:
+        envelope = self.params.envelope
         try:
-            if self.params.envelope.syncMessage is not None:
-                return self.params.envelope.syncMessage.sentMessage.groupInfo.groupId
-            if self.params.envelope.dataMessage is not None:
-                return self.params.envelope.dataMessage.groupInfo.groupId
-        except:
+            if envelope.syncMessage is not None:
+                return envelope.syncMessage.sentMessage.groupInfo.groupId
+            if envelope.dataMessage is not None:
+                return envelope.dataMessage.groupInfo.groupId
+        except Exception as e:
+            log.warning(e)
             return None
 
     @property
     def source(self) -> str:
         try:
             return self.params.envelope.source
-        except:
+        except Exception as e:
+            log.warning(e)
             return None
 
     @property
     def message(self) -> str:
+        envelope = self.params.envelope
         try:
-            if self.params.envelope.syncMessage is not None:
-                return self.params.envelope.syncMessage.sentMessage.message
-            if self.params.envelope.dataMessage is not None:
-                return self.params.envelope.dataMessage.message
-        except:
+            if envelope.syncMessage is not None:
+                return envelope.syncMessage.sentMessage.message
+            if envelope.dataMessage is not None:
+                return envelope.dataMessage.message
+        except Exception as e:
+            log.warning(e)
             return None
 
 
