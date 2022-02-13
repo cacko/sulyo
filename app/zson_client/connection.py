@@ -64,6 +64,8 @@ class Connection(object, metaclass=ConnectionMeta):
                 try:
                     junk = await self.__reader.readuntil(SOH)
                     if len(junk) > 1:
+                        print(junk)
+                        print(self.__reader.at_eof)
                         continue
                     size = await self.__partSize
                     log.debug(f">> RECEIVE PartSize={size}")
@@ -89,9 +91,8 @@ class Connection(object, metaclass=ConnectionMeta):
                         log.debug(">> RESPONSE PROCESSED")
                         yield response
                 except IncompleteReadError:
-                    continue
-                    # self.__registered = False
-                    # await self.connect(reconnect=True)
+                    self.__registered = False
+                    await self.connect(reconnect=True)
         except Exception as e:
             raise ReceiveMessagesError(e)
 
