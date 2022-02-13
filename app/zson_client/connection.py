@@ -14,7 +14,7 @@ from typing import Generator
 from pathlib import Path
 import asyncio
 
-DEFAULT_LIMIT = 2 ** 32
+DEFAULT_LIMIT = 2 ** 25
 SOH = b"\x07"
 BYTEORDER = "little"
 
@@ -65,7 +65,7 @@ class Connection(object, metaclass=ConnectionMeta):
                     print(data)
                     log.debug(">> RECEIVED BELL")
                     size = await self.__partSize
-                    if not size:
+                    if not size or size > DEFAULT_LIMIT:
                         continue
                     log.debug(f">> RECEIVE PartSize={size}")
                     data = await self.__reader.readexactly(size)
