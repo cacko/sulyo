@@ -15,7 +15,7 @@ from pathlib import Path
 import asyncio
 
 DEFAULT_LIMIT = 2 ** 32
-SOH = b"\x07\x03\x04"
+SOH = b"\x07"
 BYTEORDER = "little"
 
 
@@ -61,7 +61,7 @@ class Connection(object, metaclass=ConnectionMeta):
             await self.connect()
             while True:
                 try:
-                    data = await self.__reader.readuntil(SOH[0])
+                    data = await self.__reader.readuntil(SOH)
                     print(data)
                     log.debug(">> RECEIVED BELL")
                     size = await self.__partSize
