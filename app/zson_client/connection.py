@@ -15,6 +15,7 @@ from pathlib import Path
 import asyncio
 
 DEFAULT_LIMIT = 2 ** 32
+SOH = b"\x01"
 
 
 class UnknownClientException(Exception):
@@ -59,6 +60,7 @@ class Connection(object, metaclass=ConnectionMeta):
             await self.connect()
             while True:
                 try:
+                    await self.__reader.readuntil(SOH)
                     size = await self.__partSize
                     if not size:
                         continue
@@ -82,6 +84,7 @@ class Connection(object, metaclass=ConnectionMeta):
                                 Path(response.attachment.path).name
                             )
                             response.attachment.path = download
+                        log.debug(">> RESPONSE PROCESSED")
                         yield response
                 except IncompleteReadError:
                     self.__registered = False
@@ -106,7 +109,7 @@ class Connection(object, metaclass=ConnectionMeta):
                 size = max(0, size - 1024)
                 chunk = min(1024, size)
                 log.debug(f">> CHUNK {chunk}")
-                data = await self.__reader.readexactly(chunk)
+                data = await self.__reader.read(chunk)
                 f.write(data)
         return p
 
@@ -132,6 +135,7 @@ class Connection(object, metaclass=ConnectionMeta):
             size = len(data).to_bytes(
                 4, byteorder='big', signed=False
             )
+            self.__writer.write(SOH)
             self.__writer.write(size)
             self.__writer.write(data)
             await self.__writer.drain()
