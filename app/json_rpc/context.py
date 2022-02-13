@@ -2,7 +2,7 @@ from app.core.models import RenderResult
 from app.json_rpc.api import JsonRpcAPI
 from app.zson_client.connection import Connection
 from app.zson_client.models import ZSONRequest
-
+from app import log
 
 class Context:
 
@@ -27,6 +27,7 @@ class Context:
         await Connection.send(request)
 
     async def respond(self, response: RenderResult):
+        log.debug(f">> RESPOND {RenderResult}")
         await self.api.send(
             receiver=self.group,
             message=response.message,
