@@ -13,11 +13,11 @@ from asyncio.streams import open_connection
 from typing import Generator
 from pathlib import Path
 import asyncio
+from binascii import unhexlify
 
 DEFAULT_LIMIT = 2 ** 25
-SOH = b"\x07"
 BYTEORDER = "little"
-CHUNKSIZE = 2 ** 13
+CHUNKSIZE = 2 ** 12
 
 
 class UnknownClientException(Exception):
@@ -62,14 +62,11 @@ class Connection(object, metaclass=ConnectionMeta):
             await self.connect()
             while True:
                 try:
-                    junk = await self.__reader.readuntil(SOH)
-                    if len(junk) > 1:
-                        print(junk)
-                        print(self.__reader.at_eof)
+                    partSize = await self.__partSize
+                    if not partSize:
                         continue
-                    size = await self.__partSize
-                    log.debug(f">> RECEIVE PartSize={size}")
-                    data = await self.__reader.readexactly(size)
+                    log.debug(f">> RECEIVE PartSize={partSize}")
+                    data = await self.__reader.readexactly(partSize)
                     msg_json = data.decode()
                     message: ZSONMessage = ZSONMessage.from_json(msg_json)
                     if message.type == ZSONType.REQUEST:
@@ -112,8 +109,9 @@ class Connection(object, metaclass=ConnectionMeta):
             while size:
                 to_read = CHUNKSIZE if size > CHUNKSIZE else size
                 chunk = await self.__reader.read(to_read)
-                f.write(chunk)
-                size -= to_read
+                bytes = unhexlify(chunk)
+                size -= len(bytes)
+                f.write(bytes)
         return p
 
     async def connect(self, reconnect=False):
@@ -138,7 +136,6 @@ class Connection(object, metaclass=ConnectionMeta):
             size = len(data).to_bytes(
                 4, byteorder=BYTEORDER, signed=False
             )
-            self.__writer.write(SOH)
             self.__writer.write(size)
             self.__writer.write(data)
             await self.__writer.drain()
