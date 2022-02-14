@@ -21,7 +21,7 @@ class CommandDefMeta(type):
             filter(
                 lambda x: any(
                     [
-                        len(x.method) == 2 and fs == x.method,
+                        x.method.split(":")[-1] == fs,
                         len(fs) > 2 and x.method.startswith(fs),
                         len(fs) > 2 and x.method.split(
                             ":")[-1].startswith(fs)
