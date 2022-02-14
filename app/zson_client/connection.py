@@ -105,13 +105,13 @@ class Connection(object, metaclass=ConnectionMeta):
         p = cache_path / name
         with p.open("wb") as f:
             size = await self.__partSize
+            size = size * 2
             log.debug(f">> ATTACHMENT size={size}")
             while size:
                 to_read = CHUNKSIZE if size > CHUNKSIZE else size
                 chunk = await self.__reader.read(to_read)
-                bytes = unhexlify(chunk)
-                size -= len(bytes)
-                f.write(bytes)
+                size -= len(chunk)
+                f.write(unhexlify(chunk))
         return p
 
     async def connect(self, reconnect=False):
