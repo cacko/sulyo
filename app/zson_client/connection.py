@@ -65,7 +65,7 @@ class Connection(object, metaclass=ConnectionMeta):
                     partSize = await self.__partSize
                     if not partSize:
                         continue
-                    log.debug(f">> RECEIVE PartSize={partSize}")
+                    log.info(f">> RECEIVE PartSize={partSize}")
                     data = await self.__reader.readexactly(partSize)
                     msg_json = data.decode()
                     message: ZSONMessage = ZSONMessage.from_json(msg_json)
@@ -106,7 +106,7 @@ class Connection(object, metaclass=ConnectionMeta):
         with p.open("wb") as f:
             size = await self.__partSize
             size = size * 2
-            log.debug(f">> ATTACHMENT size={size}")
+            log.info(f">> ATTACHMENT size={size}")
             while size:
                 to_read = CHUNKSIZE if size > CHUNKSIZE else size
                 chunk = await self.__reader.read(to_read)
@@ -136,6 +136,7 @@ class Connection(object, metaclass=ConnectionMeta):
             size = len(data).to_bytes(
                 4, byteorder=BYTEORDER, signed=False
             )
+            log.info(f">> SEND {size}")
             self.__writer.write(size)
             self.__writer.write(data)
             await self.__writer.drain()

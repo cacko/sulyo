@@ -92,7 +92,6 @@ class App(object, metaclass=AppMeta):
         try:
             async for message in self.api.receive():
                 group = message.group
-                log.debug(f">> SIGNAL IN {message}")
                 if group not in self.groups:
                     continue
                 try:
@@ -103,6 +102,7 @@ class App(object, metaclass=AppMeta):
                     command = CommandDef.triggered(trigger)
                     if not command:
                         continue
+                    log.info(f">> SIGNAL IN {message}")
                     context = Context(
                         api=self.api,
                         group=message.group,

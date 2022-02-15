@@ -28,7 +28,6 @@ class Context:
         await Connection.send(request)
 
     async def respond(self, response: RenderResult):
-        log.debug(f">> RESPOND {response}")
         await self.api.send(
             receiver=self.group,
             message=response.message,
