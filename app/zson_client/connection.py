@@ -136,7 +136,7 @@ class Connection(object, metaclass=ConnectionMeta):
             size = len(data).to_bytes(
                 4, byteorder=BYTEORDER, signed=False
             )
-            log.info(f">> SEND {size}")
+            log.info(f">> SEND {len(data)}")
             self.__writer.write(size)
             self.__writer.write(data)
             await self.__writer.drain()
