@@ -58,7 +58,7 @@ class ZSONError:
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
 class ZSONMessage:
-    type: ZSONType
+    ztype: ZSONType
     group: Optional[str] = None
     id: Optional[str] = None
     method: str = None
@@ -78,7 +78,7 @@ class ZSONResponse(ZSONMessage):
     error: Optional[ZSONError] = None
     message: Optional[str] = None
     attachment: Optional[Attachment] = None
-    type: ZSONType = ZSONType.RESPONSE
+    ztype: ZSONType = ZSONType.RESPONSE
     commands: Optional[list[CommandDef]] = None
 
     @property
@@ -100,7 +100,7 @@ class ZSONRequest(ZSONMessage):
     source: Optional[str] = None
     query: Optional[str] = None
     utf8mono: Optional[bool] = False
-    type: ZSONType = ZSONType.REQUEST
+    ztype: ZSONType = ZSONType.REQUEST
 
 
 class NoCommand(Exception):

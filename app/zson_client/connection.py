@@ -69,9 +69,9 @@ class Connection(object, metaclass=ConnectionMeta):
                     data = await self.__reader.readexactly(partSize)
                     msg_json = data.decode()
                     message: ZSONMessage = ZSONMessage.from_json(msg_json)
-                    if message.type == ZSONType.REQUEST:
+                    if message.ztype == ZSONType.REQUEST:
                         yield None
-                    elif message.type == ZSONType.RESPONSE:
+                    elif message.ztype == ZSONType.RESPONSE:
                         if message.method == "login":
                             self.__registered = True
                         if not self.__registered:
