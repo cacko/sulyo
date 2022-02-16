@@ -44,7 +44,7 @@ class CommandDef(metaclass=CommandDefMeta):
 @dataclass
 class Attachment:
     path: Path
-    type: str
+    contentType: str
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
