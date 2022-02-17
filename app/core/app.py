@@ -41,6 +41,10 @@ class AppMeta(type):
         cls().commands.append(cmd)
         CommandDef.registered.append(cmd)
 
+    def clearCommands(cls):
+        cls().commands = []
+        CommandDef.clearCommands()
+
     @property
     def cmdMatch(cls) -> CommandMatch:
         if not cls._cmdMatch:
@@ -131,6 +135,7 @@ class App(object, metaclass=AppMeta):
                             f"Wrong clientId response {response.client}")
                         continue
                     if response.method == "login":
+                        __class__.clearCommands()
                         for cmd in response.commands:
                             __class__.register(cmd)
                         continue

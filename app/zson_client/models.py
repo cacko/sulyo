@@ -32,6 +32,9 @@ class CommandDefMeta(type):
             None,
         )
 
+    def clearCommands(cls):
+        cls.registered = []
+
 
 @dataclass_json
 @dataclass
