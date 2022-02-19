@@ -17,14 +17,20 @@ class CommandDefMeta(type):
 
     def triggered(cls, firestarter: str):
         fs = firestarter.lower()
+
         return next(
             filter(
                 lambda x: any(
                     [
                         x.method.split(":")[-1] == fs,
-                        len(fs) > 2 and x.method.startswith(fs),
-                        len(fs) > 2 and x.method.split(
-                            ":")[-1].startswith(fs)
+                        len(fs) > 2 and any(
+                            map(
+                                lambda x: x.method.startswith(fs), [
+                                    x.method,
+                                    *x.method.split(":")
+                                ]
+                            )
+                        )
                     ]
                 ),
                 cls.registered,
