@@ -25,7 +25,7 @@ class CommandDefMeta(type):
                         x.method.split(":")[-1] == fs,
                         len(fs) > 2 and any(
                             map(
-                                lambda x: x.method.startswith(fs), [
+                                lambda y: y.startswith(fs), [
                                     x.method,
                                     *x.method.split(":")
                                 ]
