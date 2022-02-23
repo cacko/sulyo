@@ -56,6 +56,7 @@ class Connection(object, metaclass=ConnectionMeta):
     __reader: StreamReader = None
     __writer: StreamWriter = None
     __registered: bool = False
+    __connected: bool = False
 
     async def onReceive(self) -> Generator[ZSONResponse, None, None]:
         try:
@@ -89,6 +90,7 @@ class Connection(object, metaclass=ConnectionMeta):
                         yield response
                 except IncompleteReadError:
                     self.__registered = False
+                    self.__connected = False
                     await self.connect(reconnect=True)
         except Exception as e:
             raise ReceiveMessagesError(e)
@@ -115,6 +117,8 @@ class Connection(object, metaclass=ConnectionMeta):
         return p
 
     async def connect(self, reconnect=False):
+        if self.__connected:
+            return
         try:
             if reconnect:
                 log.info("reconnecting")
@@ -122,10 +126,13 @@ class Connection(object, metaclass=ConnectionMeta):
             self.__reader, self.__writer = await open_connection(
                 Config.znayko.host, Config.znayko.port, limit=DEFAULT_LIMIT
             )
-            await self.onSend(ZSONRequest(
-                method="login",
-            ))
+            if not self.__registered:
+                await self.onSend(ZSONRequest(
+                    method="login",
+                ))
+            self.__connected = True
         except Exception:
+            self.__connected = False
             log.info("Reconnect failed")
 
     async def onSend(self, req: ZSONMessage):
