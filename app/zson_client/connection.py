@@ -117,8 +117,6 @@ class Connection(object, metaclass=ConnectionMeta):
         return p
 
     async def connect(self, reconnect=False):
-        if self.__connected:
-            return
         try:
             if reconnect:
                 log.info("reconnecting")
@@ -130,9 +128,7 @@ class Connection(object, metaclass=ConnectionMeta):
                 await self.onSend(ZSONRequest(
                     method="login",
                 ))
-            self.__connected = True
         except Exception:
-            self.__connected = False
             log.info("Reconnect failed")
 
     async def onSend(self, req: ZSONMessage):
