@@ -1,4 +1,3 @@
-from tokenize import group
 from typing import Generator
 from app import log
 import asyncio
@@ -23,7 +22,7 @@ class JsonRpcAPI(Adapter):
             while True:
                 msg = await self.reader.readline()
                 message: Message = Message.from_dict(json.loads(msg))
-                if message.method and group in Config.signal.groups:
+                if message.method and message.group in Config.signal.groups:
                     yield AdapterMessage(
                         group=message.group,
                         source=message.source,
