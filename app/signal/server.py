@@ -1,4 +1,4 @@
-import os
+import subprocess
 from pathlib import Path
 from app.config import Config
 import time
@@ -7,13 +7,14 @@ import time
 
 def run_signal_cli():
     params = [
+        Config.signal.signalcli,
         "-a",
         Config.signal.account,
         "daemon",
         "--socket",
         Config.signal.host
     ]
-    os.spawnl(os.P_NOWAIT, f'{Config.signal.signalcli} {" ".join(params)}')
+    subprocess.Popen(params, start_new_session=True)
     p = Path(Config.signal.host)
     while True:
         print(f"{p} {p.exists()}")
