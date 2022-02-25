@@ -6,12 +6,12 @@ from app.config import Config
 from app.signal.server import run_signal_cli
 
 try:
-    run_signal_cli()
-    app = App(
-        BotyoConfig.from_dict(Config.botyo.to_dict()),
-        Client()
-    )
-    app.start()
+    with run_signal_cli() as server:
+        app = App(
+            BotyoConfig.from_dict(Config.botyo.to_dict()),
+            Client()
+        )
+        app.start()
 except KeyboardInterrupt:
     import sys
     sys.exit(0)
