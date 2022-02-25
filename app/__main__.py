@@ -1,13 +1,15 @@
-from app.json_rpc.api import JsonRpcAPI
+from app.signal.client import Client
 from botyo.app import App
 from app import log
 from botyo.core.config import Config as BotyoConfig
 from app.config import Config
+from app.signal.server import run_signal_cli
 
 try:
+    run_signal_cli()
     app = App(
         BotyoConfig.from_dict(Config.botyo.to_dict()),
-        JsonRpcAPI()
+        Client()
     )
     app.start()
 except KeyboardInterrupt:

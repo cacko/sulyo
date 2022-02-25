@@ -1,7 +1,7 @@
 from typing import Generator
 from app import log
 import asyncio
-from app.json_rpc.message import Message
+from app.signal.message import Message
 import json
 from uuid import uuid4
 from app.config import Config
@@ -9,7 +9,7 @@ from botyo.adapter import Adapter, AdapterMessage
 from botyo.zson_client.connection import ReceiveMessagesError
 
 
-class JsonRpcAPI(Adapter):
+class Client(Adapter):
 
     reader = None
     writer = None

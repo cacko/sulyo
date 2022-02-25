@@ -10,6 +10,8 @@ import toml
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
 class SignalConfig:
+    signalcli: str
+    account: str
     groups: list[str]
     host: str
     port: Optional[int] = None

@@ -1,10 +1,10 @@
-from .api import (
-    JsonRpcAPI,
+from .client import (
+    Client,
     JsonRpcApiError
 )
 __all__ = [
     "Message",
     "MessageType",
-    "JsonRpcAPI",
+    "Client",
     "JsonRpcApiError",
 ]
