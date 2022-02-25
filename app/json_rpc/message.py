@@ -106,11 +106,3 @@ class Message:
         except Exception as e:
             log.warning(e)
             return None
-
-
-class NoCommand(Exception):
-    pass
-
-
-class JunkMessage(Exception):
-    pass
