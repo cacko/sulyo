@@ -12,13 +12,7 @@ url = "https://pypi.cacko.net/simple/"
 [tool.poetry.dependencies]
 python = "^3.10"
 dataclasses-json = "^0.5.6"
-stringcase = "^1.2.0"
 toml = "^0.10.2"
-rich = "^11.0.0"
-validators = "^0.18.2"
-requests = "^2.27.1"
-emoji = "^1.6.3"
-thefuzz = {extras = ["speedup"], version = "^0.19.0"}
 botyo = "^0.1.6"
 
 [tool.poetry.dev-dependencies]
