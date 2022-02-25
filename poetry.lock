@@ -12,7 +12,7 @@ toml = "*"
 
 [[package]]
 name = "botyo"
-version = "0.1.4"
+version = "0.1.5"
 description = "whatever"
 category = "main"
 optional = false
@@ -327,7 +327,7 @@ test = ["pytest (>=2.2.3)", "flake8 (>=2.4.0)", "isort (>=4.2.2)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "84c1ef019b5da7283639816efa06f2ebf3232751c85fbfb7f7e3b11996bcca1c"
+content-hash = "a037b9907d27e08b4eb1971120b30652bed1fd5ae2c552e03bed9ecafd18039e"
 
 [metadata.files]
 autopep8 = [
@@ -335,7 +335,7 @@ autopep8 = [
     {file = "autopep8-1.6.0.tar.gz", hash = "sha256:44f0932855039d2c15c4510d6df665e4730f2b8582704fa48f9c55bd3e17d979"},
 ]
 botyo = [
-    {file = "botyo-0.1.4-py3-none-any.whl", hash = "md5:622364d4235894fb42d591a4c41c6ccf"},
+    {file = "botyo-0.1.5-py3-none-any.whl", hash = "md5:6a6dd2635c9910798c62d5e13fd05156"},
 ]
 certifi = [
     {file = "certifi-2021.10.8-py2.py3-none-any.whl", hash = "sha256:d62a0163eb4c2344ac042ab2bdf75399a71a2d8c7d47eac2e2ee91b9d6339569"},
