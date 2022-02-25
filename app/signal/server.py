@@ -2,10 +2,12 @@ import subprocess
 from pathlib import Path
 from app.config import Config
 import time
-# import select
 
 
 def run_signal_cli():
+    p = Path(Config.signal.host)
+    if p.exists():
+        p.unlink()
     params = [
         Config.signal.signalcli,
         "-a",
@@ -15,7 +17,7 @@ def run_signal_cli():
         Config.signal.host
     ]
     subprocess.Popen(params, start_new_session=True)
-    p = Path(Config.signal.host)
     while True:
-        print(f"{p} {p.exists()}")
+        if p.exists():
+            break
         time.sleep(1)
