@@ -3,10 +3,14 @@ from botyo.app import App
 from app import log
 from botyo.core.config import Config as BotyoConfig
 from app.config import Config
-from app.signal.server import run_signal_cli
+from app.signal.server import run_server
 
 try:
-    with run_signal_cli() as server:
+    with run_server(
+        exec=Config.signal.signalcli,
+        account=Config.signal.account,
+        host=Config.signal.host
+    ) as server:
         app = App(
             BotyoConfig.from_dict(Config.botyo.to_dict()),
             Client()

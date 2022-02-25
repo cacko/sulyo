@@ -6,17 +6,17 @@ from contextlib import contextmanager
 
 
 @contextmanager
-def run_server(*args, **kwds):
+def run_server(exec, account, host, *args, **kwds):
     p = Path(Config.signal.host)
     if p.exists():
         p.unlink()
     params = [
-        Config.signal.signalcli,
+        exec,
         "-a",
-        Config.signal.account,
+        account,
         "daemon",
         "--socket",
-        Config.signal.host
+        host
     ]
     proc = subprocess.Popen(params, start_new_session=True)
     try:
