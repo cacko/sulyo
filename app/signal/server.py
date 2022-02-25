@@ -13,7 +13,7 @@ def run_signal_cli():
         "--socket",
         Config.signal.host
     ]
-    os.spawnl(os.P_NOWAIT, Config.signal.signalcli, " ".join(params))
+    os.spawnl(os.P_NOWAIT, f'{Config.signal.signalcli} {" ".join(params)}')
     p = Path(Config.signal.host)
     while True:
         print(f"{p} {p.exists()}")
