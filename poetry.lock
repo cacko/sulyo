@@ -12,7 +12,7 @@ toml = "*"
 
 [[package]]
 name = "botyo"
-version = "0.2.3"
+version = "0.2.4"
 description = "whatever"
 category = "main"
 optional = false
@@ -192,7 +192,7 @@ autopep8 = [
     {file = "autopep8-1.6.0.tar.gz", hash = "sha256:44f0932855039d2c15c4510d6df665e4730f2b8582704fa48f9c55bd3e17d979"},
 ]
 botyo = [
-    {file = "botyo-0.2.3-py3-none-any.whl", hash = "md5:2c5e9539b0880b8dfb726d23c15128e1"},
+    {file = "botyo-0.2.4-py3-none-any.whl", hash = "md5:29d9d32f474127f421e2980fd716a36c"},
 ]
 dataclasses-json = [
     {file = "dataclasses-json-0.5.6.tar.gz", hash = "sha256:1f60be3405dee30b86ffbf6a436db8ba5efaeeb676bfda358e516a97aa7dfce4"},
