@@ -3,7 +3,7 @@
 version: "3"
 
 vars:
-  GREETING: Hello, World!
+  PROJECT: sulyo
 
 tasks:
   default:
@@ -23,22 +23,22 @@ tasks:
   logs:
     desc: monitor logs
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;journalctl --user -u botyo -f' | ccze -A
+      - ssh $REMOTE_HOST 'source ~/.zshrc;journalctl --user -u {{.PROJECT}} -f' | ccze -A
 
   start:
     desc: start the service
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user start botyo'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user start {{.PROJECT}}'
 
   restart:
     desc: restart the service
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user restart botyo'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user restart {{.PROJECT}}'
 
   stop:
     desc: stop the server
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user stop botyo'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user stop {{.PROJECT}}'
 
   push:
     desc: commit and pushes current changes
@@ -50,7 +50,7 @@ tasks:
   pull:
     desc: pulls from git
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd ~/botyo;git reset --hard;git pull'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd ~/{{.PROJECT}};git reset --hard;git pull'
 
   pp:
     desc: push and pull
@@ -61,7 +61,7 @@ tasks:
   install:
     desc: calls poetry install and npm ci
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd ~/botyo;poetry install'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd ~/{{.PROJECT}};poetry install'
 
   deploy:
     desc: shortcut for stop -> push -> pull -> restart
