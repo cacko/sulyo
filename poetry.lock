@@ -193,7 +193,7 @@ typing-extensions = ">=3.7.4"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "d032e58543eb8f5e0b522a0ec0a387d6ed2bffcc4a06eb808bd5a8e15458a09c"
+content-hash = "02095822a1788ab7afaf1d5f44ab576175e9daeedb03ca5494dc6e8c28f642b2"
 
 [metadata.files]
 autopep8 = [
