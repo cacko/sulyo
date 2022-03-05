@@ -1,7 +1,7 @@
 from app.signal.client import Client
-from botyo.app import App
+from botyo_client.app import App
 from app import log
-from botyo.core.config import Config as BotyoConfig
+from botyo_client.core.config import Config as BotyoConfig
 from app.config import Config
 from app.signal.server import run_server
 
