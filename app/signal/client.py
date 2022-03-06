@@ -13,14 +13,12 @@ class Client(Adapter):
 
     reader = None
     writer = None
-    contacts: dict[str, str] = {}
 
     async def onReceive(self) -> Generator[Message, None, None]:
         try:
             self.reader, self.writer = await asyncio.open_unix_connection(
                 Config.signal.host
             )
-            print(self.contacts)
             while True:
                 msg = await self.reader.readline()
                 print(msg)

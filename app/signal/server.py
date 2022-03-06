@@ -1,6 +1,6 @@
 from subprocess import Popen, PIPE, STDOUT
 from pathlib import Path
-
+from unidecode import unidecode
 from app.config import Config
 import time
 from contextlib import contextmanager
@@ -18,7 +18,7 @@ def run_server(exec, account, host, *args, **kwds):
             line = line.decode().strip()
             number, rest = line.split("Number:")[-1].split("Name:")
             name, _ = rest.split("Blocked")
-            contacts[number.strip()] = name.strip()
+            contacts[unidecode(number).strip()] = unidecode(name).strip()
     p = Path(Config.signal.host)
     if p.exists():
         p.unlink()
