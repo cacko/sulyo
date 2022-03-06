@@ -10,10 +10,12 @@ try:
         exec=Config.signal.signalcli,
         account=Config.signal.account,
         host=Config.signal.host
-    ) as server:
+    ) as contacts:
+        client = Client()
+        client.contacts = contacts
         app = App(
             BotyoConfig.from_dict(Config.botyo.to_dict()),
-            Client()
+            client
         )
         app.start()
 except KeyboardInterrupt:

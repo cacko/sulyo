@@ -13,12 +13,14 @@ class Client(Adapter):
 
     reader = None
     writer = None
+    contacts: dict[str, str] = {}
 
     async def onReceive(self) -> Generator[Message, None, None]:
         try:
             self.reader, self.writer = await asyncio.open_unix_connection(
                 Config.signal.host
             )
+            print(self.contacts)
             while True:
                 msg = await self.reader.readline()
                 print(msg)
@@ -46,23 +48,6 @@ class Client(Adapter):
                     "method": "send",
                     "id": uuid4().hex,
                     "params": message_params,
-                }
-            )
-            + "\n"
-        )
-        try:
-            self.writer.write(req.encode())
-            await self.writer.drain()
-        except Exception:
-            pass
-
-    async def onFindContact(self, name: str):
-        req = (
-            json.dumps(
-                {
-                    "jsonrpc": "2.0",
-                    "method": "listContacts",
-                    "id": uuid4().hex,
                 }
             )
             + "\n"
