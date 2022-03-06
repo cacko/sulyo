@@ -25,6 +25,7 @@ class BotyoConfig:
     phone: str
     client: str
     storage: str
+    redis_url: str
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
