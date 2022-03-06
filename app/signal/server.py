@@ -17,7 +17,7 @@ def run_server(exec, account, host, *args, **kwds):
         for line in iter(p.stdout.readline, b""):
             line = line.decode().strip()
             number, rest = line.split("Number:")[-1].split("Name:")
-            name, _ = rest[-1].split("Blocked")
+            name, _ = rest.split("Blocked")
             contacts[number.strip()] = name.strip()
     p = Path(Config.signal.host)
     if p.exists():
