@@ -21,6 +21,7 @@ class Client(Adapter):
             )
             while True:
                 msg = await self.reader.readline()
+                print(msg)
                 message: Message = Message.from_dict(json.loads(msg))
                 if message.method and message.group in Config.signal.groups:
                     yield AdapterMessage(
@@ -45,6 +46,23 @@ class Client(Adapter):
                     "method": "send",
                     "id": uuid4().hex,
                     "params": message_params,
+                }
+            )
+            + "\n"
+        )
+        try:
+            self.writer.write(req.encode())
+            await self.writer.drain()
+        except Exception:
+            pass
+
+    async def onFindContact(self, name: str):
+        req = (
+            json.dumps(
+                {
+                    "jsonrpc": "2.0",
+                    "method": "listContacts",
+                    "id": uuid4().hex,
                 }
             )
             + "\n"
