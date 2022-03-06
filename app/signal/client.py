@@ -21,7 +21,6 @@ class Client(Adapter):
             )
             while True:
                 msg = await self.reader.readline()
-                print(msg)
                 message: Message = Message.from_dict(json.loads(msg))
                 if message.method and message.group in Config.signal.groups:
                     yield AdapterMessage(
