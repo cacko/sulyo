@@ -18,7 +18,8 @@ def run_server(exec, account, host, *args, **kwds):
             line = line.decode().strip()
             number, rest = line.split("Number:")[-1].split("Name:")
             name, _ = rest.split("Blocked")
-            contacts[unidecode(number).strip()] = unidecode(name).strip()
+            contacts[unidecode(number).strip()] = unidecode(
+                name).strip()
     p = Path(Config.signal.host)
     if p.exists():
         p.unlink()
