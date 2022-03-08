@@ -77,17 +77,15 @@ class Message:
 
     @property
     def group(self) -> str:
-        if not self.params:
-            print(self)
-            return None
-        envelope = self.params.envelope
         try:
+            envelope = self.params.envelope
             if envelope.syncMessage is not None:
                 return envelope.syncMessage.sentMessage.groupInfo.groupId
             if envelope.dataMessage is not None:
                 return envelope.dataMessage.groupInfo.groupId
         except Exception as e:
             log.warning(e)
+            log.info(self.to_dict())
             return None
 
     @property
@@ -100,12 +98,13 @@ class Message:
 
     @property
     def message(self) -> str:
-        envelope = self.params.envelope
         try:
+            envelope = self.params.envelope
             if envelope.syncMessage is not None:
                 return envelope.syncMessage.sentMessage.message
             if envelope.dataMessage is not None:
                 return envelope.dataMessage.message
         except Exception as e:
             log.warning(e)
+            log.info(self.to_dict())
             return None
