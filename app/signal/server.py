@@ -20,10 +20,13 @@ def command_as_dict(exec, account, cmd):
 def run_server(exec, account, host, *args, **kwds):
     contacts = {}
     for line in command_as_dict(exec, account, "listContacts"):
-        number, rest = line.split("Number:")[-1].split("Name:")
-        name, _ = rest.split("Blocked")
-        contacts[unidecode(number).strip()] = unidecode(
-            name).strip()
+        try:
+            number, rest = line.split("Number:")[-1].split("Name:")
+            name, _ = rest.split("Blocked")
+            contacts[unidecode(number).strip()] = unidecode(
+                name).strip()
+        except Exception:
+            print(f"{line} failed")
     groups = {}
     for line in command_as_dict(exec, account, "listGroups"):
         id, rest = line.split("Id:")[-1].split("Name:")
