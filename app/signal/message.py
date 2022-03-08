@@ -77,6 +77,9 @@ class Message:
 
     @property
     def group(self) -> str:
+        if not self.params:
+            print(self)
+            return None
         envelope = self.params.envelope
         try:
             if envelope.syncMessage is not None:
