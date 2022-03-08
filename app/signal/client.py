@@ -21,13 +21,14 @@ class Client(Adapter):
             )
             while True:
                 msg = await self.reader.readline()
+                print(msg)
                 message: Message = Message.from_dict(json.loads(msg))
-                if message.method and message.group in Config.signal.groups:
-                    yield AdapterMessage(
-                        group=message.group,
-                        source=message.source,
-                        message=message.message
-                    )
+                print(message)
+                yield AdapterMessage(
+                    group=message.group,
+                    source=message.source,
+                    message=message.message
+                )
         except Exception as e:
             raise ReceiveMessagesError(e)
 
