@@ -76,4 +76,3 @@ def run_server(exec, account, host, *args, **kwds):
             yield contacts, groups, proc
     finally:
         log.info("finally")
-        proc.terminate()
