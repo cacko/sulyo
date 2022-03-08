@@ -1,7 +1,6 @@
+from concurrent.futures import ThreadPoolExecutor
 from subprocess import Popen, PIPE, STDOUT
-from pathlib import Path
 from unidecode import unidecode
-from app.config import Config
 import time
 from contextlib import contextmanager
 from app import log
@@ -15,6 +14,32 @@ def command_as_dict(exec, account, cmd):
     ) as p:
         for line in iter(p.stdout.readline, b""):
             yield line.decode().strip()
+
+
+def open_signal_socket(exec, host, account):
+    p = host
+    if p.exists():
+        p.unlink()
+    params = [
+        exec,
+        "-a",
+        account,
+        "daemon",
+        "--socket",
+        host
+    ]
+    log.info(">> firing up the shitties daemon in the world")
+    proc = Popen(
+        params,
+        start_new_session=True
+    )
+    log.info(">> waiting for the junk to open the socker")
+    while True:
+        if p.exists():
+            break
+        time.sleep(1)
+    log.info(">> daemon started")
+    return proc
 
 
 @contextmanager
@@ -43,31 +68,12 @@ def run_server(exec, account, host, *args, **kwds):
         except ValueError:
             pass
     log.info(f">> {len(groups)} grounps found")
-    log.info(">> firing up the shitties daemon in the world")
-    p = Path(Config.signal.host)
-    if p.exists():
-        p.unlink()
-    params = [
-        exec,
-        "-a",
-        account,
-        "daemon",
-        "--socket",
-        host
-    ]
-    proc = Popen(
-        params,
-        start_new_session=True,
-        close_fds=True
-    )
+
     try:
-        log.info(">> waiting for the junk to open the socker")
-        while True:
-            if p.exists():
-                break
-            time.sleep(1)
-        log.info(">> daemon started")
-        yield contacts, groups
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(open_signal_socket, exec, host, account)
+            proc = future.result()
+            yield contacts, groups, proc
     finally:
         log.info("finally")
         proc.terminate()
