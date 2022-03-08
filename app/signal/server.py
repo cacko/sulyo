@@ -58,7 +58,7 @@ def run_server(exec, account, host, *args, **kwds):
     proc = Popen(
         params,
         start_new_session=True,
-        stdout=PIPE,
+        stdout=STDOUT,
         stderr=STDOUT
     )
     try:
