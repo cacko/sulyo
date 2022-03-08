@@ -11,7 +11,7 @@ try:
         exec=Config.signal.signalcli,
         account=Config.signal.account,
         host=Config.signal.host
-    ) as (contacts, groups, proc):
+    ) as (contacts, groups):
         log.info(">> starting the client")
         client = Client()
         client.contacts = contacts
@@ -23,8 +23,6 @@ try:
         app.start()
 except KeyboardInterrupt:
     import sys
-    proc.terminate()
     sys.exit(0)
 except Exception as e:
     log.exception(e, exc_info=True)
-    proc.terminate()

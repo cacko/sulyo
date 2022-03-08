@@ -68,6 +68,7 @@ def run_server(exec, account, host, *args, **kwds):
                 break
             time.sleep(1)
         log.info(">> daemon started")
-        yield (contacts, groups, proc)
+        yield contacts, groups
     finally:
-        pass
+        log.info("finally")
+        proc.terminate()
