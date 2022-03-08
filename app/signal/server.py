@@ -58,8 +58,7 @@ def run_server(exec, account, host, *args, **kwds):
     proc = Popen(
         params,
         start_new_session=True,
-        stdout=STDOUT,
-        stderr=STDOUT
+        close_fds=True
     )
     try:
         log.info(">> waiting for the junk to open the socker")
