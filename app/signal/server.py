@@ -14,7 +14,7 @@ def command_as_dict(exec, account, cmd):
         stderr=STDOUT
     ) as p:
         for line in iter(p.stdout.readline, b""):
-            yield line.decode().strip()
+            yield line.strip()
 
 
 @contextmanager
@@ -23,8 +23,8 @@ def run_server(exec, account, host, *args, **kwds):
     log.info(">> fetching contacts...")
     for line in command_as_dict(exec, account, "listContacts"):
         try:
-            number, rest = line.split("Number:")[-1].split("Name:")
-            name, _ = rest.split("Blocked")
+            number, rest = line.split(b"Number:")[-1].split(b"Name:")
+            name, _ = rest.split(b"Blocked")
             contacts[unidecode(number).strip()] = unidecode(
                 name).strip()
         except ValueError:
@@ -34,9 +34,9 @@ def run_server(exec, account, host, *args, **kwds):
     log.info(">> fetching groups...")
     for line in command_as_dict(exec, account, "listGroups"):
         try:
-            id, rest = line.split("Id:")[-1].split("Name:")
-            name, _ = rest.split("Active")
-            if name == "null":
+            id, rest = line.split(b"Id:")[-1].split(b"Name:")
+            name, _ = rest.split(b"Active")
+            if name == b"null":
                 continue
             groups[unidecode(id).strip()] = unidecode(
                 name).strip()
