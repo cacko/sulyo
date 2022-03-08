@@ -55,7 +55,13 @@ def run_server(exec, account, host, *args, **kwds):
         "--socket",
         host
     ]
-    proc = Popen(params, start_new_session=True)
+    proc = Popen(
+        params,
+        start_new_session=True,
+        close_fds=True,
+        stdout=STDOUT,
+        stderr=STDOUT,
+    )
     try:
         log.info(">> waiting for the junk to open the socker")
         while True:
