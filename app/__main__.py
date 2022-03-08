@@ -6,11 +6,13 @@ from app.config import Config
 from app.signal.server import run_server
 
 try:
+    log.info(f">> Starting signal-cli daemon at {Config.signal.host}...")
     with run_server(
         exec=Config.signal.signalcli,
         account=Config.signal.account,
         host=Config.signal.host
     ) as (contacts, groups):
+        log.info(">> starting the client")
         client = Client()
         client.contacts = contacts
         client.groups = groups
