@@ -21,9 +21,7 @@ class Client(Adapter):
             )
             while True:
                 msg = await self.reader.readline()
-                print(msg)
                 message: Message = Message.from_dict(json.loads(msg))
-                print(message)
                 yield AdapterMessage(
                     group=message.group,
                     source=message.source,
