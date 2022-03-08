@@ -19,8 +19,9 @@ def command_as_dict(exec, account, cmd):
 
 def open_signal_socket(exec, host, account):
     p = host
-    if p.exists():
-        p.unlink()
+    pf = Path(p)
+    if pf.exists():
+        pf.unlink()
     params = [
         exec,
         "-a",
@@ -36,7 +37,7 @@ def open_signal_socket(exec, host, account):
     )
     log.info(">> waiting for the junk to open the socker")
     while True:
-        if Path(p).exists():
+        if pf.exists():
             break
         time.sleep(1)
     log.info(">> daemon started")
