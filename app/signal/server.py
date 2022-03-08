@@ -4,6 +4,7 @@ from unidecode import unidecode
 import time
 from contextlib import contextmanager
 from app import log
+from pathlib import Path
 
 
 def command_as_dict(exec, account, cmd):
@@ -35,7 +36,7 @@ def open_signal_socket(exec, host, account):
     )
     log.info(">> waiting for the junk to open the socker")
     while True:
-        if p.exists():
+        if Path(p).exists():
             break
         time.sleep(1)
     log.info(">> daemon started")
