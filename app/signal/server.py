@@ -25,16 +25,19 @@ def run_server(exec, account, host, *args, **kwds):
             name, _ = rest.split("Blocked")
             contacts[unidecode(number).strip()] = unidecode(
                 name).strip()
-        except Exception:
-            print(f"{line} failed")
+        except ValueError:
+            pass
     groups = {}
     for line in command_as_dict(exec, account, "listGroups"):
-        id, rest = line.split("Id:")[-1].split("Name:")
-        name, _ = rest.split("Active")
-        if name == "null":
-            continue
-        groups[unidecode(id).strip()] = unidecode(
-            name).strip()
+        try:
+            id, rest = line.split("Id:")[-1].split("Name:")
+            name, _ = rest.split("Active")
+            if name == "null":
+                continue
+            groups[unidecode(id).strip()] = unidecode(
+                name).strip()
+        except ValueError:
+            pass
     p = Path(Config.signal.host)
     if p.exists():
         p.unlink()
