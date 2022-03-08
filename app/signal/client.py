@@ -6,7 +6,7 @@ import json
 from uuid import uuid4
 from app.config import Config
 from botyo_client.adapter import Adapter, AdapterMessage
-from botyo_client.zson_client.connection import ReceiveMessagesError
+from botyo_client.connection import ReceiveMessagesError
 
 
 class Client(Adapter):
