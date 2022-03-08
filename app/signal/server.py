@@ -6,20 +6,32 @@ import time
 from contextlib import contextmanager
 
 
-@contextmanager
-def run_server(exec, account, host, *args, **kwds):
-    contacts: dict[str, str] = {}
+def command_as_dict(exec, account, cmd):
     with Popen(
-        [exec, "-a", account, "listContacts"],
+        [exec, "-a", account, cmd],
         stdout=PIPE,
         stderr=STDOUT
     ) as p:
         for line in iter(p.stdout.readline, b""):
-            line = line.decode().strip()
-            number, rest = line.split("Number:")[-1].split("Name:")
-            name, _ = rest.split("Blocked")
-            contacts[unidecode(number).strip()] = unidecode(
-                name).strip()
+            yield line.decode().strip()
+
+
+@contextmanager
+def run_server(exec, account, host, *args, **kwds):
+    contacts = {}
+    for line in command_as_dict(exec, account, "listContacts"):
+        number, rest = line.split("Number:")[-1].split("Name:")
+        name, _ = rest.split("Blocked")
+        contacts[unidecode(number).strip()] = unidecode(
+            name).strip()
+    groups = {}
+    for line in command_as_dict(exec, account, "listGroups"):
+        id, rest = line.split("Id:")[-1].split("Name:")
+        name, _ = rest.split("Active")
+        if name == "null":
+            continue
+        groups[unidecode(id).strip()] = unidecode(
+            name).strip()
     p = Path(Config.signal.host)
     if p.exists():
         p.unlink()
@@ -37,6 +49,6 @@ def run_server(exec, account, host, *args, **kwds):
             if p.exists():
                 break
             time.sleep(1)
-        yield contacts
+        yield (contacts, groups)
     finally:
         proc.terminate()
