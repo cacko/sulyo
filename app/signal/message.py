@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Optional
 from dataclasses_json import dataclass_json, Undefined
 from enum import Enum
-from app import log
 
 
 class RPCMethod(Enum):
@@ -83,17 +82,14 @@ class Message:
                 return envelope.syncMessage.sentMessage.groupInfo.groupId
             if envelope.dataMessage is not None:
                 return envelope.dataMessage.groupInfo.groupId
-        except Exception as e:
-            log.warning(e)
-            log.info(self.to_dict())
+        except Exception:
             return None
 
     @property
     def source(self) -> str:
         try:
             return self.params.envelope.source
-        except Exception as e:
-            log.warning(e)
+        except Exception:
             return None
 
     @property
@@ -104,7 +100,5 @@ class Message:
                 return envelope.syncMessage.sentMessage.message
             if envelope.dataMessage is not None:
                 return envelope.dataMessage.message
-        except Exception as e:
-            log.warning(e)
-            log.info(self.to_dict())
+        except Exception:
             return None

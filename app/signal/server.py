@@ -7,14 +7,22 @@ from app import log
 from pathlib import Path
 
 
-def command_as_dict(exec, account, cmd):
+def command_as_dict(exec, account, cmd, tokens: list):
     with Popen(
         [exec, "-a", account, cmd],
         stdout=PIPE,
         stderr=STDOUT
     ) as p:
         for line in iter(p.stdout.readline, b""):
-            yield line.decode().strip()
+            try:
+                id, rest = line.decode().strip().split(
+                    tokens[0])[-1].split(tokens[1])
+                name, _ = rest.split(tokens[2])
+                if name == "null":
+                    continue
+                yield unidecode(id).strip(), unidecode(name).strip()
+            except ValueError:
+                pass
 
 
 def open_signal_socket(exec, host, account):
@@ -48,29 +56,27 @@ def open_signal_socket(exec, host, account):
 def run_server(exec, account, host, *args, **kwds):
     contacts = {}
     log.info(">> fetching contacts...")
-    for line in command_as_dict(exec, account, "listContacts"):
-        try:
-            number, rest = line.split("Number:")[-1].split("Name:")
-            name, _ = rest.split("Blocked")
-            contacts[unidecode(number).strip()] = unidecode(
-                name).strip()
-        except ValueError:
-            pass
-    groups = {}
+    contacts = {
+        id: name
+        for id, name in command_as_dict(
+            exec,
+            account,
+            "listContacts",
+            ["Number:", "Name:", "Blocked"]
+        )
+    }
     log.info(f">> {len(contacts)} contacts found")
     log.info(">> fetching groups...")
-    for line in command_as_dict(exec, account, "listGroups"):
-        try:
-            id, rest = line.split("Id:")[-1].split("Name:")
-            name, _ = rest.split("Active")
-            if name == "null":
-                continue
-            groups[unidecode(id).strip()] = unidecode(
-                name).strip()
-        except ValueError:
-            pass
+    groups = {
+        id: name
+        for id, name in command_as_dict(
+            exec,
+            account,
+            "listGroups",
+            ["Id:", "Name:", "Active"]
+        )
+    }
     log.info(f">> {len(groups)} grounps found")
-
     try:
         with ThreadPoolExecutor(max_workers=1) as executor:
             future = executor.submit(open_signal_socket, exec, host, account)
