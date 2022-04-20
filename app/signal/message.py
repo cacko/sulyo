@@ -17,6 +17,15 @@ class GroupInfo:
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
+class Attachment:
+    contentType: str
+    filename: str
+    id: str
+    size: int
+
+
+@dataclass_json(undefined=Undefined.EXCLUDE)
+@dataclass
 class SentMessage:
     destination: Optional[str]
     destinationNumber: Optional[str]
@@ -24,6 +33,7 @@ class SentMessage:
     timestamp: Optional[int]
     message: Optional[str]
     groupInfo: Optional[GroupInfo] = None
+    attachments: Optional[list[Attachment]] = None
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
@@ -100,5 +110,19 @@ class Message:
                 return envelope.syncMessage.sentMessage.message
             if envelope.dataMessage is not None:
                 return envelope.dataMessage.message
+        except Exception:
+            return None
+
+    @property
+    def attachment(self) -> Attachment:
+        try:
+            envelope = self.params.envelope
+            if all([
+                envelope.syncMessage is not None,
+                envelope.syncMessage.sentMessage.attachments is not None
+            ]):
+                return envelope.syncMessage.sentMessage.attachments[0]
+            if envelope.dataMessage is not None:
+                pass
         except Exception:
             return None
