@@ -13,6 +13,7 @@ class SignalConfig:
     signalcli: str
     account: str
     host: str
+    attachments: str
     port: Optional[int] = None
 
 
