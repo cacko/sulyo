@@ -26,6 +26,7 @@ class BotyoConfig:
     client: str
     storage: str
     redis_url: str
+    attachmenmts: str
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
