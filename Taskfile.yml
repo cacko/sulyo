@@ -18,7 +18,7 @@ tasks:
   redis:
     desc: open redis-cli
     cmds:
-      - redis-cli $REDIS_CLI%
+      - redis-cli $REDIS_CLI
 
   logs:
     desc: monitor logs
