@@ -36,8 +36,6 @@ def open_signal_socket(exec, host, account):
         account,
         "daemon",
         "--socket",
-        "--trust-new-identities",
-        "always",
         host
     ]
     log.info(">> firing up the shitties daemon in the world")
