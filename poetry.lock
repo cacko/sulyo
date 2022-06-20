@@ -20,7 +20,7 @@ toml = "*"
 
 [[package]]
 name = "botyo-client"
-version = "0.6.2"
+version = "0.6.3"
 description = "whatever"
 category = "main"
 optional = false
@@ -301,7 +301,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "2340b5d2047117cae4a38f926e36badd1af9e185fc8d7ffcbeb2354ee1dde3f0"
+content-hash = "0eeb2587d0afe73b68c48be6cc749118090d460107e80fe6098aa7a399268dca"
 
 [metadata.files]
 async-timeout = [
@@ -313,7 +313,7 @@ autopep8 = [
     {file = "autopep8-1.6.0.tar.gz", hash = "sha256:44f0932855039d2c15c4510d6df665e4730f2b8582704fa48f9c55bd3e17d979"},
 ]
 botyo-client = [
-    {file = "botyo_client-0.6.2-py3-none-any.whl", hash = "md5:4bfd05598021eef0ccf320840f0c3412"},
+    {file = "botyo_client-0.6.3-py3-none-any.whl", hash = "md5:71286ad5ad4489fbefe6048400555f7d"},
 ]
 dataclasses-json = [
     {file = "dataclasses-json-0.5.7.tar.gz", hash = "sha256:c2c11bc8214fbf709ffc369d11446ff6945254a7f09128154a7620613d8fda90"},
