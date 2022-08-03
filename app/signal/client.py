@@ -32,23 +32,38 @@ class Client(Adapter):
             raise ReceiveMessagesError(e)
 
     async def onSend(self, receiver: str,
-                     message: str, attachment: str = None):
-        message_params = {"groupId": receiver, "message": ""}
-        if message:
-            message_params["message"] = message
-        if attachment:
-            message_params.setdefault("attachment", attachment)
-        req = (
-            json.dumps(
-                {
-                    "jsonrpc": "2.0",
-                    "method": "send",
-                    "id": uuid4().hex,
-                    "params": message_params,
-                }
+                     message: str, attachment: str = None, method: str = None):
+        if method and method == 'nowplaying':
+            req = (
+                json.dumps(
+                    {
+                        "jsonrpc": "2.0",
+                        "method": "updateProfile",
+                        "id": uuid4().hex,
+                        "params": {
+                            "about": message
+                        },
+                    }
+                )
+                + "\n"
             )
-            + "\n"
-        )
+        else:
+            message_params = {"groupId": receiver, "message": ""}
+            if message:
+                message_params["message"] = message
+            if attachment:
+                message_params.setdefault("attachment", attachment)
+            req = (
+                json.dumps(
+                    {
+                        "jsonrpc": "2.0",
+                        "method": "send",
+                        "id": uuid4().hex,
+                        "params": message_params,
+                    }
+                )
+                + "\n"
+            )
         try:
             self.writer.write(req.encode())
             await self.writer.drain()
