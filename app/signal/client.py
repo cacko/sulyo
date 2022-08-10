@@ -34,19 +34,20 @@ class Client(Adapter):
     async def onSend(self, receiver: str,
                      message: str, attachment: str = None, method: str = None):
         if method and method == 'nowplaying':
-            req = (
-                json.dumps(
-                    {
-                        "jsonrpc": "2.0",
-                        "method": "updateProfile",
-                        "id": uuid4().hex,
-                        "params": {
-                            "about": message
-                        },
-                    }
-                )
-                + "\n"
-            )
+            return
+            # req = (
+            #     json.dumps(
+            #         {
+            #             "jsonrpc": "2.0",
+            #             "method": "updateProfile",
+            #             "id": uuid4().hex,
+            #             "params": {
+            #                 "about": message
+            #             },
+            #         }
+            #     )
+            #     + "\n"
+            # )
         else:
             message_params = {"groupId": receiver, "message": ""}
             if message:
