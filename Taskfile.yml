@@ -61,7 +61,7 @@ tasks:
   install:
     desc: calls poetry install and npm ci
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /var/www/{{.PROJECT}}; conda env update -n {{.PROJECT}} -f environment.yml --prune'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /home/jago/{{.PROJECT}}; conda env update -n {{.PROJECT}} -f environment.yml --prune'
 
   deploy:
     desc: shortcut for stop -> push -> pull -> restart
