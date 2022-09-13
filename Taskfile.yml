@@ -75,7 +75,7 @@ tasks:
   systemd-exec:
     desc: run the server
     cmds:
-      - direnv exec . conda --live-stream -n {{.PROJECT}} python -m app
+      - direnv exec . conda run --live-stream -n {{.PROJECT}} python -m app
 
   export:
     desc: export env
