@@ -14,6 +14,7 @@ class SignalConfig:
     host: str
     attachments: str
     port: Optional[int] = None
+    groups: Optional[list[str]] = None
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
