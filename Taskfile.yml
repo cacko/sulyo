@@ -8,7 +8,7 @@ vars:
 tasks:
   default:
     cmds:
-      - poetry run python -m app
+      - conda --live-stream -n {{.PROJECT}} python -m app
     silent: true
 
   signalcli:
@@ -23,7 +23,7 @@ tasks:
   logs:
     desc: monitor logs
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;journalctl --user -u {{.PROJECT}} -f' | ccze -A
+      - ssh $REMOTE_HOST 'source ~/.zshrc;journalctl --user -u {{.PROJECT}} -f --all'
 
   start:
     desc: start the service
@@ -61,7 +61,7 @@ tasks:
   install:
     desc: calls poetry install and npm ci
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd ~/{{.PROJECT}};poetry install'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /var/www/{{.PROJECT}}; conda env update -n {{.PROJECT}} -f environment.yml --prune'
 
   deploy:
     desc: shortcut for stop -> push -> pull -> restart
@@ -75,4 +75,9 @@ tasks:
   systemd-exec:
     desc: run the server
     cmds:
-      - direnv exec . poetry run python -m app
+      - direnv exec . conda --live-stream -n {{.PROJECT}} python -m app
+
+  export:
+    desc: export env
+    cmds:
+      - conda env export --no-builds --ignore-channels  -n {{.PROJECT}} > environment.yml

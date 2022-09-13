@@ -1,5 +1,4 @@
 from typing import Generator
-from app import log
 import asyncio
 from app.signal.message import Message
 import json
@@ -7,6 +6,7 @@ from uuid import uuid4
 from app.config import Config
 from botyo_client.adapter import Adapter, AdapterMessage
 from botyo_client.connection import ReceiveMessagesError
+import logging
 
 
 class Client(Adapter):
@@ -26,14 +26,15 @@ class Client(Adapter):
                     group=message.group,
                     source=message.source,
                     message=message.message,
-                    attachment=message.attachment
+                    attachment=message.attachment,
                 )
         except Exception as e:
             raise ReceiveMessagesError(e)
 
-    async def onSend(self, receiver: str,
-                     message: str, attachment: str = None, method: str = None):
-        if method and method == 'nowplaying':
+    async def onSend(
+        self, receiver: str, message: str, attachment: str = None, method: str = None
+    ):
+        if method and method == "nowplaying":
             return
             # req = (
             #     json.dumps(
@@ -92,7 +93,7 @@ class Client(Adapter):
             self.writer.write(req.encode())
             await self.writer.drain()
         except Exception as e:
-            log.exception(e, exc_info=True)
+            logging.exception(e, exc_info=True)
 
 
 class JsonRpcApiError(Exception):

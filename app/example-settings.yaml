@@ -1,0 +1,13 @@
+signal:
+  groups:
+    - none
+  host: ./signal.sock
+  signalcli: /usr/local/bin/signal-cli
+  account: +123452452
+
+botyo:
+  client: SIGNAL
+  host: 127.0.0.1
+  phone: +123452452
+  port: 7777
+  storage: ./cache

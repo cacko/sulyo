@@ -1,8 +1,3 @@
 {
-    "python.pythonPath": "/Users/jago/Library/Caches/pypoetry/virtualenvs/botyo-NijayK9Z-py3.10/bin/python",
-    "python.formatting.provider": "autopep8",
-    "python.linting.enabled": true,
-    "python.linting.pylintPath": "pylint",
-    "editor.formatOnSave": true,
-    "python.linting.flake8Enabled": true
+    "python.formatting.provider": "black"
 }

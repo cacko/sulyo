@@ -2,8 +2,8 @@ from concurrent.futures import ThreadPoolExecutor
 from subprocess import Popen, PIPE, STDOUT
 from unidecode import unidecode
 import time
+import logging
 from contextlib import contextmanager
-from app import log
 from pathlib import Path
 
 
@@ -38,24 +38,24 @@ def open_signal_socket(exec, host, account):
         "--socket",
         host
     ]
-    log.info(">> firing up the shitties daemon in the world")
+    logging.info(">> firing up the shitties daemon in the world")
     proc = Popen(
         params,
         start_new_session=True
     )
-    log.info(">> waiting for the junk to open the socker")
+    logging.info(">> waiting for the junk to open the socker")
     while True:
         if pf.exists():
             break
         time.sleep(1)
-    log.info(">> daemon started")
+    logging.info(">> daemon started")
     return proc
 
 
 @contextmanager
 def run_server(exec, account, host, *args, **kwds):
     contacts = {}
-    log.info(">> fetching contacts...")
+    logging.info(">> fetching contacts...")
     contacts = {
         id: name
         for id, name in command_as_dict(
@@ -65,8 +65,8 @@ def run_server(exec, account, host, *args, **kwds):
             ["Number:", "Name:", "Blocked"]
         )
     }
-    log.info(f">> {len(contacts)} contacts found")
-    log.info(">> fetching groups...")
+    logging.info(f">> {len(contacts)} contacts found")
+    logging.info(">> fetching groups...")
     groups = {
         id: name
         for id, name in command_as_dict(
@@ -76,11 +76,11 @@ def run_server(exec, account, host, *args, **kwds):
             ["Id:", "Name:", "Active"]
         )
     }
-    log.info(f">> {len(groups)} grounps found")
+    logging.info(f">> {len(groups)} grounps found")
     try:
         with ThreadPoolExecutor(max_workers=1) as executor:
             future = executor.submit(open_signal_socket, exec, host, account)
             proc = future.result()
             yield contacts, groups, proc
     finally:
-        log.info("finally")
+        logging.info("finally")
