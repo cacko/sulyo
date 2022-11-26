@@ -17,13 +17,14 @@ try:
         client.contacts = contacts
         client.groups = groups
         app = App(
-            BotyoConfig.from_dict(Config.botyo.to_dict()),
+            BotyoConfig.from_dict(Config.botyo.to_dict()),  # type: ignore
             client
         )
-        app.start()
-except KeyboardInterrupt:
-    import sys
-    proc.terminate()
-    sys.exit(0)
+        try:
+            app.start()
+        except KeyboardInterrupt:
+            import sys
+            proc.terminate()
+            sys.exit(0)
 except Exception as e:
     logging.exception(e, exc_info=True)
