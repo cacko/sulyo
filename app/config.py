@@ -55,8 +55,8 @@ class ConfigMeta(type):
 
 class Config(object, metaclass=ConfigMeta):
 
-    struct: ConfigStruct = None
+    struct: ConfigStruct
 
     def __init__(self):
         settings = Path(environ.get("SETTINGS_PATH", "app/settings.yaml"))
-        self.struct = ConfigStruct.from_dict(load(settings.read_text(), Loader=Loader))
+        self.struct = ConfigStruct(**load(settings.read_text(), Loader=Loader))
