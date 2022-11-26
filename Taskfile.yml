@@ -8,7 +8,7 @@ vars:
 tasks:
   default:
     cmds:
-      - conda --live-stream -n {{.PROJECT}} python -m app
+      - mamba --live-stream -n {{.PROJECT}} python -m app
     silent: true
 
   signalcli:
@@ -61,7 +61,7 @@ tasks:
   install:
     desc: calls poetry install and npm ci
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /home/jago/{{.PROJECT}}; conda env update -n {{.PROJECT}} -f environment.yml --prune'
+      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /home/jago/{{.PROJECT}}; mamba env update -n {{.PROJECT}} -f environment.yml --prune'
 
   deploy:
     desc: shortcut for stop -> push -> pull -> restart
@@ -75,9 +75,9 @@ tasks:
   systemd-exec:
     desc: run the server
     cmds:
-      - direnv exec . conda run --live-stream -n {{.PROJECT}} python -m app
+      - direnv exec . mamba run --live-stream -n {{.PROJECT}} python -m app
 
   export:
     desc: export env
     cmds:
-      - conda env export --no-builds --ignore-channels  -n {{.PROJECT}} > environment.yml
+      - mamba env export --no-builds --ignore-channels  -n {{.PROJECT}} > environment.yml
