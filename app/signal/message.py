@@ -114,7 +114,7 @@ class Message:
             return None
 
     @property
-    def attachment(self) -> Optional[Attachment]:
+    def attachment(self) -> Attachment:
         try:
             envelope = self.params.envelope
             if all([

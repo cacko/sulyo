@@ -1,10 +1,10 @@
-from typing import AsyncGenerator
+from typing import Generator
 import asyncio
 from app.signal.message import Message
 import json
 from uuid import uuid4
 from app.config import Config
-from botyo_client.adapter import Adapter, AdapterMessage, Attachment as AdapterAttachment
+from botyo_client.adapter import Adapter, AdapterMessage
 from botyo_client.connection import ReceiveMessagesError
 import logging
 
@@ -14,27 +14,19 @@ class Client(Adapter):
     reader = None
     writer = None
 
-    async def onReceive(self) -> AsyncGenerator[AdapterMessage, None]:
+    async def onReceive(self) -> Generator[Message, None, None]:
         try:
             self.reader, self.writer = await asyncio.open_unix_connection(
                 Config.signal.host
             )
             while True:
                 msg = await self.reader.readline()
-                message: Message = Message.from_dict(json.loads(msg))  # type: ignore
-                att = None
-                if message.attachment:
-                    att = AdapterAttachment(
-                        path=message.attachment.filename,
-                        contentType=message.attachment.contentType,
-                        id=message.attachment.id,
-                        filename=message.attachment.filename
-                    )
+                message: Message = Message.from_dict(json.loads(msg))
                 yield AdapterMessage(
                     group=message.group,
                     source=message.source,
                     message=message.message,
-                    attachment=att,
+                    attachment=message.attachment,
                 )
         except Exception as e:
             raise ReceiveMessagesError(e)
