@@ -21,7 +21,7 @@ dependencies:
     - async-timeout==4.0.2
     - black==22.8.0
     - blis==0.7.9
-    - botyo-client==0.6.29
+    - botyo-client==0.6.30
     - botyo-server==0.7.126
     - cachetools==5.2.0
     - catalogue==2.0.8
