@@ -3,7 +3,7 @@ from .message import Message
 import json
 from uuid import uuid4
 from sulyo.config import Config
-from sulyo.znayko.connection import ReceiveMessagesError, 
+from sulyo.znayko.connection import ReceiveMessagesError
 import logging
 
 
