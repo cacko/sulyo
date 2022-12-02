@@ -2,16 +2,16 @@ from asyncio import Queue
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json, Undefined
 from typing import Generator
-from znayko.directives import Directive, NoDirective
-from znayko.models import (
+from sulyo.znayko.directives import Directive, NoDirective
+from sulyo.znayko.models import (
     Attachment,
     CommandDef,
     JunkMessage,
     NoCommand,
     ZSONRequest
 )
-from znayko.core.models import RenderResult
-from znayko.connection import Connection
+from sulyo.znayko.core.models import RenderResult
+from sulyo.znayko.connection import Connection
 import time
 import logging
 from typing import Optional
