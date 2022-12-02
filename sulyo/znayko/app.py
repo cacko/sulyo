@@ -1,5 +1,5 @@
 import time
-from .adapter import Adapter, Context
+from sulyo.signal.client import Client, Context
 from .core.models import RenderResult
 from .core.config import Config
 from fuzzelinho import Match, MatchMethod
@@ -57,12 +57,12 @@ class App(object, metaclass=AppMeta):
 
     commands: list[CommandDef] = []
 
-    def __init__(self, config: Config, adapter: Adapter):
+    def __init__(self, config: Config, client: Client):
         Connection.setup(**config.to_dict())  # type: ignore
         Storage.register(config.redis_url)
         self.eventLoop = asyncio.get_event_loop()
         self.queue = asyncio.Queue()
-        self.adapter = adapter
+        self.client = client
 
     def start(self):
         self.eventLoop.create_task(self._produce_consume_messages())
@@ -70,7 +70,7 @@ class App(object, metaclass=AppMeta):
 
     async def _produce_consume_messages(self, consumers=3):
         producers = [
-            asyncio.create_task(self.adapter.receive(self.queue)),
+            asyncio.create_task(self.client.receive(self.queue)),
             asyncio.create_task(self._product_znayko(2)),
         ]
         consumers = [
@@ -99,7 +99,7 @@ class App(object, metaclass=AppMeta):
                             (
                                 response,
                                 Context(
-                                    adapter=self.adapter,
+                                    adapter=self.client,
                                     group=response.group,
                                 ),
                                 time.perf_counter(),

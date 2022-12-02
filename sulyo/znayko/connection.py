@@ -79,7 +79,7 @@ class Connection(object, metaclass=ConnectionMeta):
                     logging.debug(f">> RECEIVE PartSize={partSize}")
                     data = await self.__reader.readexactly(partSize)
                     msg_json = data.decode()
-                    logging.debug(">> {msg_json}")
+                    logging.debug(f">> {msg_json}")
                     message: ZSONMessage = ZSONMessage.from_json(msg_json)
                     if message.ztype == ZSONType.REQUEST:
                         yield None

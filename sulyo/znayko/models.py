@@ -169,3 +169,7 @@ class JunkMessage(Exception):
 
 class ReceiveError(Exception):
     pass
+
+
+class MessageConsumed(Exception):
+    pass
