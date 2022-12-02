@@ -80,8 +80,13 @@ class Client:
     reader = None
     writer = None
 
-    async def handleDirective(self, message):
-        cmd, response = Directive.parse(**message.to_dict())
+    async def handleDirective(self, message: Message):
+        cmd, response = Directive.parse(
+            message=message.message,
+            group=message.group,
+            source=message.source,
+            attachment=message.attachment,
+        )
         await self.queue.put(
             (
                 cmd,

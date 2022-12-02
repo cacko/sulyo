@@ -2,7 +2,10 @@ from dataclasses_json import dataclass_json
 from .core.storage import Storage
 from .models import Attachment, CommandDef, ZSONMatcher, ZSONResponse
 from fuzzelinho import Match, MatchMethod
+
+from typing import Optional
 from dataclasses import dataclass
+
 
 class NoDirective(Exception):
     pass
@@ -70,10 +73,10 @@ class DirectiveMeta(type):
 
     def parse(
         cls,
-        message: str = None,
-        group: str = None,
-        source: str = None,
-        attachment: Attachment = None,
+        message: str,
+        group: Optional[str] = None,
+        source: Optional[str] = None,
+        attachment: Optional[Attachment] = None,
     ) -> str:
         first = message.lower().split(" ")[0]
         d = next(
