@@ -5,7 +5,7 @@ signal:
   signalcli: /usr/local/bin/signal-cli
   account: +123452452
 
-botyo:
+znayko:
   client: SIGNAL
   host: 127.0.0.1
   phone: +123452452
