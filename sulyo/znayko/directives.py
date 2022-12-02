@@ -76,7 +76,6 @@ class DirectiveMeta(type):
         message: str,
         group: Optional[str] = None,
         source: Optional[str] = None,
-        attachment: Optional[Attachment] = None,
     ) -> str:
         first = message.lower().split(" ")[0]
         d = next(
@@ -99,7 +98,6 @@ class DirectiveMeta(type):
         message: str = None,
         group: str = None,
         source: str = None,
-        attachment: Attachment = None,
     ) -> tuple[CommandDef, str]:
         chatMatch = source in cls._chats
         if not chatMatch:

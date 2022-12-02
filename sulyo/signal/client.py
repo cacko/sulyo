@@ -86,7 +86,6 @@ class Client:
                 message=message.message,
                 group=message.group,
                 source=message.source,
-                attachment=message.attachment,
             )
             await self.queue.put(
                 (
@@ -104,13 +103,16 @@ class Client:
         except NoDirective:
             pass
 
-    async def handleCommand(self, message):
+    async def handleCommand(self, message: Message):
         lang = "en"
-        command, args = CommandDef.parse(**message.to_dict())
+        command, args = CommandDef.parse(message=message.message)
         if not command:
-            args = message.msg
+            args = message.message
             command, lang = Directive.match(
-                commands=CommandDef.matchers, **message.to_dict()
+                commands=CommandDef.matchers,
+                message=message.message,
+                group=message.group,
+                source=message.source,
             )
         assert command
         logging.info(f">> SIGNAL IN {message}")
