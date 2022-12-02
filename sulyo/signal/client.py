@@ -3,12 +3,12 @@ from .message import Message
 import json
 from uuid import uuid4
 from sulyo.config import Config
-from sulyo.znayko.connection import ReceiveMessagesError
+from sulyo.znayko.connection import ReceiveMessagesError, 
 import logging
 
 
 from asyncio import Queue
-from sulyo.znayko.directives import Directive
+from sulyo.znayko.directives import Directive, NoDirective
 from sulyo.znayko.models import (
     Attachment,
     CommandDef,
@@ -81,25 +81,28 @@ class Client:
     writer = None
 
     async def handleDirective(self, message: Message):
-        cmd, response = Directive.parse(
-            message=message.message,
-            group=message.group,
-            source=message.source,
-            attachment=message.attachment,
-        )
-        await self.queue.put(
-            (
-                cmd,
-                Context(
-                    adapter=self,
-                    group=message.group,
-                    query=response,
-                    source=message.source,
-                ),
-                time.perf_counter(),
+        try:
+            cmd, response = Directive.parse(
+                message=message.message,
+                group=message.group,
+                source=message.source,
+                attachment=message.attachment,
             )
-        )
-        raise MessageConsumed
+            await self.queue.put(
+                (
+                    cmd,
+                    Context(
+                        adapter=self,
+                        group=message.group,
+                        query=response,
+                        source=message.source,
+                    ),
+                    time.perf_counter(),
+                )
+            )
+            raise MessageConsumed
+        except NoDirective:
+            pass
 
     async def handleCommand(self, message):
         lang = "en"
