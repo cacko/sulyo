@@ -1,11 +1,11 @@
 from typing import Generator
 import asyncio
-from app.signal.message import Message
+from .message import Message
 import json
 from uuid import uuid4
-from app.config import Config
-from botyo_client.adapter import Adapter, AdapterMessage
-from botyo_client.connection import ReceiveMessagesError
+from sulyo.config import Config
+from sulyo.znayko.adapter import Adapter, AdapterMessage
+from sulyo.znayko.connection import ReceiveMessagesError
 import logging
 
 

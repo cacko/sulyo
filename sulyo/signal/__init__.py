@@ -3,8 +3,6 @@ from .client import (
     JsonRpcApiError
 )
 __all__ = [
-    "Message",
-    "MessageType",
     "Client",
     "JsonRpcApiError",
 ]

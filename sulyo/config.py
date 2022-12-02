@@ -19,7 +19,7 @@ class SignalConfig:
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
-class BotyoConfig:
+class ZnaykoConfig:
     host: str
     port: int
     phone: str
@@ -33,7 +33,7 @@ class BotyoConfig:
 @dataclass
 class ConfigStruct:
     signal: SignalConfig
-    botyo: BotyoConfig
+    znayko: ZnaykoConfig
 
 
 class ConfigMeta(type):
@@ -49,8 +49,8 @@ class ConfigMeta(type):
         return cls().struct.signal
 
     @property
-    def botyo(cls) -> BotyoConfig:
-        return cls().struct.botyo
+    def znayko(cls) -> ZnaykoConfig:
+        return cls().struct.znayko
 
 
 class Config(object, metaclass=ConfigMeta):

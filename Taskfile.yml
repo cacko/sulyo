@@ -8,7 +8,7 @@ vars:
 tasks:
   default:
     cmds:
-      - mamba --live-stream -n {{.PROJECT}} python -m app
+      - mamba --live-stream -n {{.PROJECT}} python -m {{.PROJECT}}
     silent: true
 
   signalcli:
@@ -85,7 +85,7 @@ tasks:
   systemd-exec:
     desc: run the server
     cmds:
-      - direnv exec . mamba run --live-stream -n {{.PROJECT}} python -m app
+      - direnv exec . mamba run --live-stream -n {{.PROJECT}} python -m {{.PROJECT}}
 
   export:
     desc: export env
