@@ -132,7 +132,7 @@ class Connection(object, metaclass=ConnectionMeta):
         except AssertionError:
             return None
         except Exception as e:
-            logging.error(e)
+            logging.exception(e)
             return None
 
     async def connect(self, reconnect=False):

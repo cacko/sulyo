@@ -100,6 +100,8 @@ class Attachment:
     contentType: str
     duration: Optional[int] = None
     filename: Optional[str] = None
+    width: Optional[int] = None
+    height: Optional[int] = None
     id: Optional[str] = None
 
 
