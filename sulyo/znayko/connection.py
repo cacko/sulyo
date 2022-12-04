@@ -9,7 +9,7 @@ from .models import (
 from typing import Optional
 import logging
 from asyncio.streams import open_connection
-from typing import Generator, Union
+from typing import AsyncGenerator, Union, Generator
 from pathlib import Path
 import asyncio
 from corestring import string_hash
@@ -48,7 +48,7 @@ class ConnectionMeta(type):
         cls._phone = phone
         cls._attachments = attachments
 
-    async def receive(cls) -> Generator[ZSONResponse, None, None]:
+    async def receive(cls) -> AsyncGenerator[ZSONResponse, None]:
         async for response in cls().onReceive():
             yield response
 
@@ -64,11 +64,9 @@ class ConnectionMeta(type):
 
 class Connection(object, metaclass=ConnectionMeta):
 
-    __reader: StreamReader = None
-    __writer: StreamWriter = None
     __registered: bool = False
 
-    async def onReceive(self) -> Generator[ZSONResponse, None, None]:
+    async def onReceive(self) -> AsyncGenerator[ZSONResponse, None]:
         try:
             await self.connect()
             while True:
@@ -80,35 +78,33 @@ class Connection(object, metaclass=ConnectionMeta):
                     data = await self.__reader.readexactly(partSize)
                     msg_json = data.decode()
                     logging.debug(f">> {msg_json}")
-                    message: ZSONMessage = ZSONMessage.from_json(msg_json)
-                    if message.ztype == ZSONType.REQUEST:
-                        yield None
-                    elif message.ztype == ZSONType.RESPONSE:
-                        if message.method == "login":
-                            self.__registered = True
-                        if not self.__registered:
-                            logging.warning(
-                                ">> RECEIVE Ignoring non registered message"
-                            )
-                            raise UnknownClientException
-                        response: ZSONResponse = ZSONResponse.from_json(msg_json)
-                        if response.attachment:
-                            download = await self.__handleAttachment(
-                                Path(response.attachment.path).name
-                            )
-                            if not download:
-                                response.attachment = None
-                            else:
-                                response.attachment.path = download
-                            logging.warning(response)
-                        logging.debug(">> RESPONSE PROCESSED")
-                        yield response
+                    message: ZSONMessage = ZSONMessage.from_json(msg_json)  # type: ignore
+                    assert message.ztype == ZSONType.RESPONSE
+                    if message.method == "login":
+                        self.__registered = True
+                    if not self.__registered:
+                        logging.warning(">> RECEIVE Ignoring non registered message")
+                        raise UnknownClientException
+                    response: ZSONResponse = ZSONResponse.from_json(msg_json) #type: ignore
+                    if response.attachment:
+                        download = await self.__handleAttachment(
+                            Path(response.attachment.path).name
+                        )
+                        if not download:
+                            response.attachment = None
+                        else:
+                            response.attachment.path = download
+                        logging.warning(response)
+                    logging.debug(">> RESPONSE PROCESSED")
+                    yield response
+                except AssertionError:
+                    pass
                 except IncompleteReadError:
                     self.__registered = False
-                    self.__connected = False
+                    await self.connect(reconnect=True)
         except Exception as e:
             self.__registered = False
-            self.__connected = False
+            await self.connect(reconnect=True)
             raise ReceiveMessagesError(e)
 
     @property
