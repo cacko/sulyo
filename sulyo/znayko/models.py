@@ -28,7 +28,7 @@ class CommandDefMeta(type):
     registered = []
     _trans = None
 
-    def parse(cls, message: str, **kwds) -> tuple["CommandDef", str]:
+    def parse(cls, message: str, **kwds) -> tuple[Optional["CommandDef"], Optional[str]]:
         message = message.lower()
         if message.startswith("/"):
             trigger, args = [*message.lstrip("/").split(" ", 1), ""][:2]
@@ -64,7 +64,7 @@ class CommandDefMeta(type):
         cls.registered = []
 
     @property
-    def textGenerate(cls) -> "CommandDef":
+    def textGenerate(cls) -> Optional["CommandDef"]:
         return next(filter(lambda x: x.method == "text:generate", cls.registered), None)
 
     @property
@@ -126,8 +126,7 @@ class ZSONMessage:
         self.id = uuid4().hex
 
     def encode(self) -> bytes:
-        return self.to_json().encode()
-
+        return self.to_json().encode() # type: ignore
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass

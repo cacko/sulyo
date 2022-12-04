@@ -55,11 +55,16 @@ class DirectiveMeta(type):
         return kls
 
     def __call__(cls, *args, **kwds):
+        k = cls.__name__
         if cls not in cls._instances:
-            cls._instances[cls] = type.__call__(cls, *args, **kwds)
-        return cls._instances[cls]
+            cls._instances[k] = type.__call__(cls, *args, **kwds)
+        return cls._instances[k]
 
-    def load(cls, contacts: dict[str, str] = None, groups: dict[str, str] = None):
+    def load(
+        cls,
+        contacts: Optional[dict[str, str]] = None,
+        groups: Optional[dict[str, str]] = None,
+    ):
         cls._chats = {
             k.decode(): v.decode() for k, v in Storage.hgetall(cls.KEY_CHATS).items()
         }
@@ -95,25 +100,29 @@ class DirectiveMeta(type):
     def match(
         cls,
         commands: list[CommandDef],
-        message: str = None,
-        group: str = None,
-        source: str = None,
-    ) -> tuple[CommandDef, str]:
+        message: Optional[str] = None,
+        group: Optional[str] = None,
+        source: Optional[str] = None,
+    ) -> tuple[Optional[CommandDef], Optional[str]]:
         chatMatch = source in cls._chats
         if not chatMatch:
-            commands = filter(
-                lambda x: ZSONMatcher(x.matcher) != ZSONMatcher.SOURCE, commands
+            commands = list(
+                filter(lambda x: ZSONMatcher(x.matcher) != ZSONMatcher.SOURCE, commands)
             )
-        print(list(commands))
         for cmd in commands:
             t = ZSONMatcher(cmd.matcher)
             if chatMatch and t == ZSONMatcher.SOURCE:
                 return (cmd, cls._chats[source])
             if t == ZSONMatcher.PHRASE:
-                matcher = PhraseMatch([PhraseNeedle(text=message)])
-                matches = matcher.fuzzy(PhraseNeedle(text=cmd.response))
-                if matches:
-                    return (cmd, "en")
+                try:
+                    assert message
+                    assert cmd.response
+                    matcher = PhraseMatch([PhraseNeedle(text=message)])
+                    matches = matcher.fuzzy(PhraseNeedle(text=cmd.response))
+                    if matches:
+                        return (cmd, "en")
+                except AssertionError:
+                    pass
         return (None, None)
 
 
