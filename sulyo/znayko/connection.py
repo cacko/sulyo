@@ -125,7 +125,7 @@ class Connection(object, metaclass=ConnectionMeta):
                 logging.debug(f">> ATTACHMENT size={size}")
                 while size:
                     to_read = CHUNKSIZE if size > CHUNKSIZE else size
-                    chunk = await self.__reader.read(to_read)
+                    chunk = await self.__reader.readexactly(to_read)
                     size -= len(chunk)
                     if size % 2:
                         chunk = chunk[:-1]
@@ -181,13 +181,11 @@ class Connection(object, metaclass=ConnectionMeta):
                 size.to_bytes(4, byteorder=BYTEORDER, signed=False),
             )
             with p.open("rb") as f:
-                while size:
-                    to_read = CHUNKSIZE if size > CHUNKSIZE else size
-                    chunk = f.read(to_read)
-                    if chunk % 2:
-                        chunk = chunk[:-1]
-                    self.__writer.write(hexlify(chunk))
-                    size -= to_read
+                while True:
+                    data = f.read(CHUNKSIZE)
+                    if not data:
+                        break
+                    self.__writer.write(hexlify(data))
             logging.debug(f">> Send attachment {size}")
             await self.__writer.drain()
         except AssertionError:
