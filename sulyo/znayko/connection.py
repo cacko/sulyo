@@ -127,6 +127,8 @@ class Connection(object, metaclass=ConnectionMeta):
                     to_read = CHUNKSIZE if size > CHUNKSIZE else size
                     chunk = await self.__reader.read(to_read)
                     size -= len(chunk)
+                    if size % 2:
+                        chunk = chunk[:-1]
                     f.write(unhexlify(chunk))
             return p
         except AssertionError:
