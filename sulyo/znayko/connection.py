@@ -182,6 +182,8 @@ class Connection(object, metaclass=ConnectionMeta):
                 while size:
                     to_read = CHUNKSIZE if size > CHUNKSIZE else size
                     chunk = f.read(to_read)
+                    if chunk % 2:
+                        chunk = chunk[:-1]
                     self.__writer.write(hexlify(chunk))
                     size -= to_read
             logging.debug(f">> Send attachment {size}")
