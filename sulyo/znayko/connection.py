@@ -127,7 +127,8 @@ class Connection(object, metaclass=ConnectionMeta):
                     if size < 1:
                         break
                     to_read = CHUNKSIZE if (size * 2) > CHUNKSIZE else (size * 2)
-                    chunk = await self.__reader.read(to_read)
+                    logging.debug(f">> TO_READ {to_read} {size} {size*2}")
+                    chunk = await self.__reader.readexactly(to_read)
                     if not chunk:
                         break
                     size -= f.write(unhexlify(chunk))
