@@ -95,7 +95,7 @@ class Connection(object, metaclass=ConnectionMeta):
                             response.attachment = None
                         else:
                             response.attachment.path = download
-                        logging.warning(response)
+                        logging.debug(response)
                     logging.debug(">> RESPONSE PROCESSED")
                     yield response
                 except AssertionError:

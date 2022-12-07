@@ -140,7 +140,7 @@ class ZSONResponse(ZSONMessage):
 
     @property
     def result(self) -> RenderResult:
-        logging.warning(self)
+        logging.debug(self)
         attachment_path = None
         if self.attachment is not None and self.attachment.path.exists():
             attachment_path = self.attachment.path.absolute().as_posix()
