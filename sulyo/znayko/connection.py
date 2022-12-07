@@ -126,7 +126,7 @@ class Connection(object, metaclass=ConnectionMeta):
                 while True:
                     if size < 1:
                         break
-                    to_read = CHUNKSIZE if size > CHUNKSIZE else size
+                    to_read = CHUNKSIZE if (size * 2) > CHUNKSIZE else (size * 2)
                     chunk = await self.__reader.read(to_read)
                     if not chunk:
                         break
