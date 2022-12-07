@@ -26,7 +26,6 @@ from typing import Optional
 
 class Context:
 
-    adapter = None
     group: str = None
     query: str = None
     source: str = None
@@ -35,7 +34,7 @@ class Context:
 
     def __init__(
         self,
-        adapter,
+        adapter: "Client",
         group: str,
         query: str = None,
         source: str = None,
@@ -77,8 +76,6 @@ class Client:
 
     contacts: dict[str, str] = {}
     groups: dict[str, str] = {}
-    reader = None
-    writer = None
 
     async def handleDirective(self, message: Message):
         try:
@@ -137,7 +134,7 @@ class Client:
             while True:
                 try:
                     msg = await self.reader.readline()
-                    message = Message.from_dict(json.loads(msg))
+                    message = Message.from_dict(json.loads(msg))  # type: ignore
                     assert message.message
                     await self.handleDirective(message)
                     assert Directive.isPermitted(message.group)
@@ -152,42 +149,29 @@ class Client:
             raise ReceiveMessagesError(e)
 
     async def send(
-        self, receiver: str, message: str, attachment: str = None, method: str = None
+        self,
+        receiver: str,
+        message: str,
+        attachment: Optional[str] = None,
+        method: Optional[str] = None,
     ):
         try:
-            if method and method == "nowplaying":
-                return
-                # req = (
-                #     json.dumps(
-                #         {
-                #             "jsonrpc": "2.0",
-                #             "method": "updateProfile",
-                #             "id": uuid4().hex,
-                #             "params": {
-                #                 "about": message
-                #             },
-                #         }
-                #     )
-                #     + "\n"
-                # )
-            else:
-                message_params = {"groupId": receiver, "message": ""}
-                if message:
-                    message_params["message"] = message
-                if attachment:
-                    message_params.setdefault("attachment", attachment)
-                req = (
-                    json.dumps(
-                        {
-                            "jsonrpc": "2.0",
-                            "method": "send",
-                            "id": uuid4().hex,
-                            "params": message_params,
-                        }
-                    )
-                    + "\n"
+            message_params = {"groupId": receiver, "message": ""}
+            if message:
+                message_params["message"] = message
+            if attachment:
+                message_params["attachment"] = attachment
+            req = (
+                json.dumps(
+                    {
+                        "jsonrpc": "2.0",
+                        "method": "send",
+                        "id": uuid4().hex,
+                        "params": message_params,
+                    }
                 )
-
+                + "\n"
+            )
             self.writer.write(req.encode())
             await self.writer.drain()
         except Exception:

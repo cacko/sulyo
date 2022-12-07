@@ -85,44 +85,49 @@ class Message:
     params: Optional[MessageParams] = None
 
     @property
-    def group(self) -> str:
+    def group(self) -> Optional[str]:
         try:
+            assert self.params
             envelope = self.params.envelope
             if envelope.syncMessage is not None:
+                assert envelope.syncMessage.sentMessage
+                assert envelope.syncMessage.sentMessage.groupInfo
                 return envelope.syncMessage.sentMessage.groupInfo.groupId
             if envelope.dataMessage is not None:
+                assert envelope.dataMessage.groupInfo
                 return envelope.dataMessage.groupInfo.groupId
-        except Exception:
+        except AssertionError:
             return None
 
     @property
-    def source(self) -> str:
+    def source(self) -> Optional[str]:
         try:
+            assert self.params
             return self.params.envelope.source
-        except Exception:
+        except AssertionError:
             return None
 
     @property
-    def message(self) -> str:
+    def message(self) -> Optional[str]:
         try:
+            assert self.params
             envelope = self.params.envelope
             if envelope.syncMessage is not None:
+                assert envelope.syncMessage.sentMessage
                 return envelope.syncMessage.sentMessage.message
             if envelope.dataMessage is not None:
                 return envelope.dataMessage.message
-        except Exception:
+        except AssertionError:
             return None
 
     @property
-    def attachment(self) -> Attachment:
+    def attachment(self) -> Optional[Attachment]:
         try:
+            assert self.params
             envelope = self.params.envelope
-            if all([
-                envelope.syncMessage is not None,
-                envelope.syncMessage.sentMessage.attachments is not None
-            ]):
-                return envelope.syncMessage.sentMessage.attachments[0]
-            if envelope.dataMessage is not None:
-                pass
-        except Exception:
+            assert envelope.syncMessage
+            assert envelope.syncMessage.sentMessage
+            assert envelope.syncMessage.sentMessage.attachments
+            return envelope.syncMessage.sentMessage.attachments[0]
+        except AssertionError:
             return None

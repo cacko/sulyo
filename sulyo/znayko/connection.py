@@ -14,10 +14,11 @@ from pathlib import Path
 import asyncio
 from corestring import string_hash
 from binascii import hexlify, unhexlify
+from io import DEFAULT_BUFFER_SIZE
 
-DEFAULT_LIMIT = 2**25
+DEFAULT_LIMIT = 2**16
 BYTEORDER = "little"
-CHUNKSIZE = 2**12
+CHUNKSIZE = DEFAULT_BUFFER_SIZE
 
 
 class UnknownClientException(Exception):
@@ -85,7 +86,7 @@ class Connection(object, metaclass=ConnectionMeta):
                     if not self.__registered:
                         logging.warning(">> RECEIVE Ignoring non registered message")
                         raise UnknownClientException
-                    response: ZSONResponse = ZSONResponse.from_json(msg_json) #type: ignore
+                    response: ZSONResponse = ZSONResponse.from_json(msg_json)  # type: ignore
                     if response.attachment:
                         download = await self.__handleAttachment(
                             Path(response.attachment.path).name
@@ -112,7 +113,7 @@ class Connection(object, metaclass=ConnectionMeta):
         data = await self.__reader.readexactly(4)
         return int.from_bytes(data, byteorder=BYTEORDER, signed=False)
 
-    async def __handleAttachment(self, name) -> Optional[Path]:
+    async def __handleAttachment(self, name: str) -> Optional[Path]:
         try:
             assert __class__._storage
             cache_path = Path(__class__._storage)
@@ -121,15 +122,15 @@ class Connection(object, metaclass=ConnectionMeta):
             p = cache_path / name
             with p.open("wb") as f:
                 size = await self.__partSize
-                size = size * 2
                 logging.debug(f">> ATTACHMENT size={size}")
-                while size:
+                while True:
+                    if size < 1:
+                        break
                     to_read = CHUNKSIZE if size > CHUNKSIZE else size
-                    chunk = await self.__reader.readexactly(to_read)
-                    size -= len(chunk)
-                    if size % 2:
-                        chunk = chunk[:-1]
-                    f.write(unhexlify(chunk))
+                    chunk = await self.__reader.read(to_read)
+                    if not chunk:
+                        break
+                    size -= f.write(unhexlify(chunk))
             return p
         except AssertionError:
             return None

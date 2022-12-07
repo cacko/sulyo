@@ -8,15 +8,11 @@ from pathlib import Path
 
 
 def command_as_dict(exec, account, cmd, tokens: list):
-    with Popen(
-        [exec, "-a", account, cmd],
-        stdout=PIPE,
-        stderr=STDOUT
-    ) as p:
+    with Popen([exec, "-a", account, cmd], stdout=PIPE, stderr=STDOUT) as p:
+        assert p.stdout
         for line in iter(p.stdout.readline, b""):
             try:
-                id, rest = line.decode().strip().split(
-                    tokens[0])[-1].split(tokens[1])
+                id, rest = line.decode().strip().split(tokens[0])[-1].split(tokens[1])
                 name, _ = rest.split(tokens[2])
                 if name == "null":
                     continue
@@ -30,19 +26,9 @@ def open_signal_socket(exec, host, account):
     pf = Path(p)
     if pf.exists():
         pf.unlink()
-    params = [
-        exec,
-        "-a",
-        account,
-        "daemon",
-        "--socket",
-        host
-    ]
+    params = [exec, "-a", account, "daemon", "--socket", host]
     logging.info(">> firing up the shitties daemon in the world")
-    proc = Popen(
-        params,
-        start_new_session=True
-    )
+    proc = Popen(params, start_new_session=True)
     logging.info(">> waiting for the junk to open the socker")
     while True:
         if pf.exists():
@@ -59,10 +45,7 @@ def run_server(exec, account, host, *args, **kwds):
     contacts = {
         id: name
         for id, name in command_as_dict(
-            exec,
-            account,
-            "listContacts",
-            ["Number:", "Name:", "Blocked"]
+            exec, account, "listContacts", ["Number:", "Name:", "Blocked"]
         )
     }
     logging.info(f">> {len(contacts)} contacts found")
@@ -70,10 +53,7 @@ def run_server(exec, account, host, *args, **kwds):
     groups = {
         id: name
         for id, name in command_as_dict(
-            exec,
-            account,
-            "listGroups",
-            ["Id:", "Name:", "Active"]
+            exec, account, "listGroups", ["Id:", "Name:", "Active"]
         )
     }
     logging.info(f">> {len(groups)} grounps found")
