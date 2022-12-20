@@ -8,7 +8,7 @@ from .core.models import ErrorResult, RenderResult
 from fuzzelinho import Match, MatchMethod
 import logging
 
-COMMAND_TRIGGER = ":"
+COMMAND_TRIGGER = ";"
 
 
 class ZSONType(Enum):
