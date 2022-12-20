@@ -8,6 +8,9 @@ from .core.models import ErrorResult, RenderResult
 from fuzzelinho import Match, MatchMethod
 import logging
 
+COMMAND_TRIGGER = ":"
+
+
 class ZSONType(Enum):
     REQUEST = "request"
     RESPONSE = "response"
@@ -28,10 +31,12 @@ class CommandDefMeta(type):
     registered = []
     _trans = None
 
-    def parse(cls, message: str, **kwds) -> tuple[Optional["CommandDef"], Optional[str]]:
+    def parse(
+        cls, message: str, **kwds
+    ) -> tuple[Optional["CommandDef"], Optional[str]]:
         message = message.lower()
-        if message.startswith("/"):
-            trigger, args = [*message.lstrip("/").split(" ", 1), ""][:2]
+        if message.startswith(COMMAND_TRIGGER):
+            trigger, args = [*message.lstrip(COMMAND_TRIGGER).split(" ", 1), ""][:2]
             triggers = filter(lambda x: not x.matcher, cls.registered)
             return (
                 next(
@@ -126,7 +131,8 @@ class ZSONMessage:
         self.id = uuid4().hex
 
     def encode(self) -> bytes:
-        return self.to_json().encode() # type: ignore
+        return self.to_json().encode()  # type: ignore
+
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
