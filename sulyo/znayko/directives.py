@@ -204,11 +204,11 @@ class Listing(Directive):
     def execute(self, *args, **kwargs):
         rows = [
             *[
-                f"🏢 {__class__.groups[id]} {lang.upper()}"
+                f"🏢 {__class__.groups.get(id, id)} {lang.upper()}"
                 for id, lang in __class__._groups.items()
             ],
             *[
-                f"🙎🏽‍♂️ {__class__.contacts[id]} {lang.upper()}"
+                f"🙎🏽‍♂️ {__class__.contacts.get(id, id)} {lang.upper()}"
                 for id, lang in __class__._chats.items()
             ],
         ]
