@@ -156,7 +156,10 @@ class Client:
         method: Optional[str] = None,
     ):
         try:
-            message_params = {"groupId": receiver, "message": ""}
+            if receiver.startswith("+"):
+                message_params = {"recipient": [receiver], "message": ""}
+            else:
+                message_params = {"groupId": receiver, "message": ""}
             if message:
                 message_params["message"] = message
             if attachment:
