@@ -91,8 +91,12 @@ class Message:
             envelope = self.params.envelope
             if envelope.syncMessage is not None:
                 assert envelope.syncMessage.sentMessage
-                assert envelope.syncMessage.sentMessage.groupInfo
-                return envelope.syncMessage.sentMessage.groupInfo.groupId
+                try:
+                    assert envelope.syncMessage.sentMessage.groupInfo
+                    return envelope.syncMessage.sentMessage.groupInfo.groupId
+                except AssertionError:
+                    assert envelope.syncMessage.sentMessage.destination
+                    return envelope.syncMessage.sentMessage.destination
             if envelope.dataMessage is not None:
                 assert envelope.dataMessage.groupInfo
                 return envelope.dataMessage.groupInfo.groupId
