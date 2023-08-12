@@ -146,8 +146,7 @@ class Client:
                 except (JunkMessage, NoCommand):
                     pass
         except Exception as e:
-            pass
-            # raise ReceiveMessagesError(e)
+            raise ReceiveMessagesError(e)
 
     async def send(
         self,
