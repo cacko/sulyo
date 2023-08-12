@@ -22,7 +22,6 @@ dependencies:
     - beautifulsoup4==4.11.1
     - black==22.8.0
     - blis==0.7.9
-    - botyo-server==0.7.126
     - cachable==0.3.31
     - cachetools==5.2.0
     - catalogue==2.0.8
