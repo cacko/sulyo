@@ -72,9 +72,16 @@ class MessageEnvelope:
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
-class MessageParams:
+class MessageParamsResult:
     account: str
     envelope: MessageEnvelope
+
+
+@dataclass_json(undefined=Undefined.EXCLUDE)
+@dataclass
+class MessageParams:
+    subscription: int
+    result: MessageParamsResult
 
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
@@ -88,7 +95,7 @@ class Message:
     def group(self) -> Optional[str]:
         try:
             assert self.params
-            envelope = self.params.envelope
+            envelope = self.params.result.envelope
             if envelope.syncMessage is not None:
                 assert envelope.syncMessage.sentMessage
                 try:
@@ -107,7 +114,7 @@ class Message:
     def source(self) -> Optional[str]:
         try:
             assert self.params
-            return self.params.envelope.source
+            return self.params.result.envelope.source
         except AssertionError:
             return None
 
@@ -115,7 +122,7 @@ class Message:
     def message(self) -> Optional[str]:
         try:
             assert self.params
-            envelope = self.params.envelope
+            envelope = self.params.result.envelope
             if envelope.syncMessage is not None:
                 assert envelope.syncMessage.sentMessage
                 return envelope.syncMessage.sentMessage.message
@@ -128,7 +135,7 @@ class Message:
     def attachment(self) -> Optional[Attachment]:
         try:
             assert self.params
-            envelope = self.params.envelope
+            envelope = self.params.result.envelope
             assert envelope.syncMessage
             assert envelope.syncMessage.sentMessage
             assert envelope.syncMessage.sentMessage.attachments
