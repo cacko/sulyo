@@ -163,6 +163,7 @@ class Client:
                 message_params = {"groupId": receiver, "message": ""}
             if message:
                 message_params["message"] = message
+                message_params["textStyle"] = f"0:{len(message)}:MONOSPACE"
             if attachment:
                 message_params["attachment"] = attachment
             req = (
