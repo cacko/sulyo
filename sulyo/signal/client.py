@@ -20,7 +20,6 @@ from sulyo.znayko.models import (
 from sulyo.znayko.core.models import RenderResult
 from sulyo.znayko.connection import Connection
 import time
-import logging
 from typing import Optional
 
 
