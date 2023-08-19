@@ -134,7 +134,8 @@ class Client:
             while True:
                 try:
                     msg = await self.reader.readline()
-                    message = Message.from_dict(json.loads(msg))  # type: ignore
+                    message = Message.from_dict(json.loads(msg))
+                    logging.debug(message)
                     assert message.message
                     await self.handleDirective(message)
                     assert Directive.isPermitted(message.group)
