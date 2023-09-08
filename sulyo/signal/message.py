@@ -89,7 +89,7 @@ class MessageParams:
 class Message:
     jsonrpc: float
     method: Optional[str] = None
-    params: Optional[MessageParams] = None
+    params: Optional[MessageParams | MessageParamsResult] = None
 
     @property
     def group(self) -> Optional[str]:
