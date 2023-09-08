@@ -27,15 +27,15 @@ def open_signal_socket(exec, host, account):
     if pf.exists():
         pf.unlink()
     params = [
-        exec, 
-        "-a", 
-        account, 
-        "daemon", 
-        "--socket", 
-        host, 
-        # "--no-receive-stdout",
+        exec,
+        "-a",
+        account,
+        "daemon",
+        "--socket",
+        host,
+        "--no-receive-stdout",
         "--receive-mode",
-        "on-start"
+        "on-start",
     ]
     logging.info(">> firing up the shitties daemon in the world")
     proc = Popen(params, start_new_session=True)

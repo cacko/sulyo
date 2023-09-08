@@ -89,13 +89,13 @@ class MessageParams:
 class Message:
     jsonrpc: float
     method: Optional[str] = None
-    params: Optional[MessageParamsResult] = None
+    params: Optional[MessageParams] = None
 
     @property
     def group(self) -> Optional[str]:
         try:
             assert self.params
-            envelope = self.params.envelope
+            envelope = self.params.result.envelope
             if envelope.syncMessage is not None:
                 assert envelope.syncMessage.sentMessage
                 try:
@@ -114,7 +114,7 @@ class Message:
     def source(self) -> Optional[str]:
         try:
             assert self.params
-            return self.params.envelope.source
+            return self.params.result.envelope.source
         except AssertionError:
             return None
 
@@ -122,7 +122,7 @@ class Message:
     def message(self) -> Optional[str]:
         try:
             assert self.params
-            envelope = self.params.envelope
+            envelope = self.params.result.envelope
             if envelope.syncMessage is not None:
                 assert envelope.syncMessage.sentMessage
                 return envelope.syncMessage.sentMessage.message
@@ -135,7 +135,7 @@ class Message:
     def attachment(self) -> Optional[Attachment]:
         try:
             assert self.params
-            envelope = self.params.envelope
+            envelope = self.params.result.envelope
             assert envelope.syncMessage
             assert envelope.syncMessage.sentMessage
             assert envelope.syncMessage.sentMessage.attachments
