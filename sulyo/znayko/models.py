@@ -4,6 +4,7 @@ from dataclasses_json import dataclass_json, Undefined
 from enum import Enum
 from typing import Optional
 from pathlib import Path
+from pydantic import BaseModel
 from .core.models import ErrorResult, RenderResult
 from fuzzelinho import Match, MatchMethod
 import logging
@@ -16,15 +17,13 @@ class ZSONType(Enum):
     RESPONSE = "response"
 
 
-@dataclass_json
-@dataclass
-class Chat:
+class Chat(BaseModel):
     msg: str
 
 
 class ChatMatch(Match):
     minRatio = 95
-    method = MatchMethod.WRATIO
+    method = MatchMethod.PARTIAL
 
 
 class CommandDefMeta(type):
