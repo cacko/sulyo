@@ -5,6 +5,8 @@ version: "3"
 vars:
   PROJECT: sulyo
 
+dotenv: ['.env']
+
 tasks:
   default:
     cmds:
