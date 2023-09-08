@@ -8,7 +8,7 @@ vars:
 tasks:
   default:
     cmds:
-      - mamba --live-stream -n {{.PROJECT}} python -m {{.PROJECT}}
+      - mamba run --live-stream -n {{.PROJECT}} python -m {{.PROJECT}}
     silent: true
 
   signalcli:
