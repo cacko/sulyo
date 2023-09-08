@@ -1,10 +1,8 @@
-from dataclasses_json import dataclass_json
 from .core.storage import Storage
-from .models import Attachment, CommandDef, ZSONMatcher, ZSONResponse
+from .models import CommandDef, ZSONMatcher, ZSONResponse
 from fuzzelinho import Match, MatchMethod
-
+from pydantic import BaseModel
 from typing import Optional
-from dataclasses import dataclass
 
 
 class NoDirective(Exception):
@@ -15,26 +13,20 @@ class PhraseMatch(Match):
     method = MatchMethod.WRATIO
 
 
-@dataclass_json
-@dataclass
-class PhraseNeedle:
+class PhraseNeedle(BaseModel):
     text: str
 
 
 class NameMatch(Match):
-    method = MatchMethod.WRATIO
+    method = MatchMethod.PARTIAL
     minRatio = 80
 
 
-@dataclass_json
-@dataclass
-class NameNeedle:
+class NameNeedle(BaseModel):
     name: str
 
 
-@dataclass_json
-@dataclass
-class Contact:
+class Contact(BaseModel):
     name: str
     id: str
 

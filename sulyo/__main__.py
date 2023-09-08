@@ -17,7 +17,7 @@ try:
         client.contacts = contacts
         client.groups = groups
         app = App(
-            ZnaykoConfig.from_dict(Config.znayko.to_dict()), client  # type: ignore
+            ZnaykoConfig.from_dict(Config.znayko.to_dict()), client
         )
         try:
             app.start()
