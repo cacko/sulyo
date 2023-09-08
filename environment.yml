@@ -17,7 +17,7 @@ dependencies:
   - wheel=0.41.1
   - xz=5.2.6
   - pip:
-      - apscheduler==3.9.1.1
+      - apscheduler==3.10.2
       - async-timeout==4.0.2
       - beautifulsoup4==4.11.1
       - better-exceptions==0.3.3
@@ -41,7 +41,7 @@ dependencies:
       - deprecated==1.2.13
       - emoji==2.0.0
       - flake8==5.0.4
-      - fuzzelinho==0.1.0
+      - fuzzelinho==0.2.3
       - hiredis==2.0.0
       - humanfriendly==10.0
       - idna==3.4
@@ -70,7 +70,6 @@ dependencies:
       - pygments==2.13.0
       - pyparsing==3.0.9
       - pyphen==0.13.2
-      - python-levenshtein==0.12.2
       - pytz==2022.6
       - pytz-deprecation-shim==0.1.0.post0
       - pyyaml==6.0
