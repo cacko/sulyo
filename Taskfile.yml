@@ -52,7 +52,7 @@ tasks:
   pull:
     desc: pulls from git
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.profile;cd ~/{{.PROJECT}};git reset --hard;git pull'
+      - ssh $REMOTE_HOST 'source ~/.profile;cd ~/local/{{.PROJECT}};git reset --hard;git pull'
 
   pp:
     desc: push and pull
@@ -63,7 +63,7 @@ tasks:
   install:
     desc: calls poetry install and npm ci
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.profile;cd /home/jago/{{.PROJECT}}; mamba env update -n {{.PROJECT}} -f environment.yml --prune'
+      - ssh $REMOTE_HOST 'source ~/.profile;cd /local/{{.PROJECT}}; mamba env update -n {{.PROJECT}} -f environment.yml --prune'
 
   update:
     desc: update package
