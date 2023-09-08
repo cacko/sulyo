@@ -25,22 +25,22 @@ tasks:
   logs:
     desc: monitor logs
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;journalctl --user -u {{.PROJECT}} -f --all'
+      - ssh $REMOTE_HOST 'journalctl -u {{.PROJECT}} -f --all'
 
   start:
     desc: start the service
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user start {{.PROJECT}}'
+      - ssh $REMOTE_HOST 'systemctl start {{.PROJECT}}'
 
   restart:
     desc: restart the service
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user restart {{.PROJECT}}'
+      - ssh $REMOTE_HOST 'systemctl restart {{.PROJECT}}'
 
   stop:
     desc: stop the server
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;systemctl --user stop {{.PROJECT}}'
+      - ssh $REMOTE_HOST 'systemctl stop {{.PROJECT}}'
 
   push:
     desc: commit and pushes current changes
@@ -52,29 +52,13 @@ tasks:
   pull:
     desc: pulls from git
     cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd ~/{{.PROJECT}};git reset --hard;git pull'
+      - ssh $REMOTE_HOST 'cd ~/local/{{.PROJECT}};git reset --hard;git pull'
 
   pp:
     desc: push and pull
     cmds:
       - task: push
       - task: pull
-
-  install:
-    desc: calls poetry install and npm ci
-    cmds:
-      - ssh $REMOTE_HOST 'source ~/.zshrc;cd /home/jago/{{.PROJECT}}; mamba env update -n {{.PROJECT}} -f environment.yml --prune'
-
-  update:
-    desc: update package
-    cmds:
-      - mamba run --live-stream -n {{.PROJECT}} pip install {{.CLI_ARGS}} -U
-      - task: export
-      - sed -i '' -e '/libcxx/d' environment.yml
-      - task: pp
-      - task: install
-      - task: deploy
-
 
   deploy:
     desc: shortcut for stop -> push -> pull -> restart
