@@ -25,22 +25,22 @@ tasks:
   logs:
     desc: monitor logs
     cmds:
-      - ssh $REMOTE_HOST 'source ~/..profile;journalctl -u {{.PROJECT}} -f --all'
+      - ssh $REMOTE_HOST 'source ~/.profile;journalctl -u {{.PROJECT}} -f --all'
 
   start:
     desc: start the service
     cmds:
-      - ssh $REMOTE_HOST 'source ~/..profile;systemctl start {{.PROJECT}}'
+      - ssh $REMOTE_HOST 'source ~/.profile;systemctl start {{.PROJECT}}'
 
   restart:
     desc: restart the service
     cmds:
-      - ssh $REMOTE_HOST 'source ~/..profile;systemctl restart {{.PROJECT}}'
+      - ssh $REMOTE_HOST 'source ~/.profile;systemctl restart {{.PROJECT}}'
 
   stop:
     desc: stop the server
     cmds:
-      - ssh $REMOTE_HOST 'source ~/..profile;systemctl stop {{.PROJECT}}'
+      - ssh $REMOTE_HOST 'source ~/.profile;systemctl stop {{.PROJECT}}'
 
   push:
     desc: commit and pushes current changes
@@ -52,7 +52,7 @@ tasks:
   pull:
     desc: pulls from git
     cmds:
-      - ssh $REMOTE_HOST 'source ~/..profile;cd ~/{{.PROJECT}};git reset --hard;git pull'
+      - ssh $REMOTE_HOST 'source ~/.profile;cd ~/{{.PROJECT}};git reset --hard;git pull'
 
   pp:
     desc: push and pull
@@ -63,7 +63,7 @@ tasks:
   install:
     desc: calls poetry install and npm ci
     cmds:
-      - ssh $REMOTE_HOST 'source ~/..profile;cd /home/jago/{{.PROJECT}}; mamba env update -n {{.PROJECT}} -f environment.yml --prune'
+      - ssh $REMOTE_HOST 'source ~/.profile;cd /home/jago/{{.PROJECT}}; mamba env update -n {{.PROJECT}} -f environment.yml --prune'
 
   update:
     desc: update package
