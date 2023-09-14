@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from .core.models import ErrorResult, RenderResult
 from fuzzelinho import Match, MatchMethod
 import logging
+from corestring import trns_bg_en
 
 COMMAND_TRIGGER = "/"
 
@@ -36,19 +37,20 @@ class CommandDefMeta(type):
         message = message.lower()
         if message.startswith(COMMAND_TRIGGER):
             trigger, args = [*message.lstrip(COMMAND_TRIGGER).split(" ", 1), ""][:2]
+            tr_trigger = trns_bg_en(trigger)
             triggers = filter(lambda x: not x.matcher, cls.registered)
             return (
                 next(
                     filter(
                         lambda x: any(
                             [
-                                x.method.split(":")[-1] == trigger,
-                                len(trigger) > 2
+                                x.method.split(":")[-1] == tr_trigger,
+                                len(tr_trigger) > 2
                                 and (
                                     x.method
-                                    if ":" in trigger
+                                    if ":" in tr_trigger
                                     else x.method.split(":")[-1]
-                                ).startswith(trigger),
+                                ).startswith(tr_trigger),
                             ]
                         ),
                         triggers,

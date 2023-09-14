@@ -75,10 +75,11 @@ class DirectiveMeta(type):
         group: Optional[str] = None,
         source: Optional[str] = None,
     ) -> str:
-        first = trns_bg_en(message).lower().split(" ")[0]
+        first = message.lower().split(" ")[0]
+        tr_first = trns_bg_en(first)
         d = next(
             filter(
-                lambda x: x().trigger is not None and first == x().trigger,
+                lambda x: x().trigger is not None and tr_first == x().trigger,
                 cls._directives,
             ),
             None,
