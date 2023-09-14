@@ -17,8 +17,9 @@ dependencies:
   - wheel=0.41.1
   - xz=5.2.6
   - pip:
-      - apscheduler==3.10.2
+      - apscheduler==3.9.1.1
       - async-timeout==4.0.2
+      - autopep8==2.0.4
       - beautifulsoup4==4.11.1
       - better-exceptions==0.3.3
       - black==22.8.0
@@ -34,14 +35,14 @@ dependencies:
       - commonmark==0.9.1
       - confection==0.0.3
       - corelog==0.0.12
-      - corestring==0.1.1
+      - corestring==0.1.21
       - cymem==2.0.7
       - cytoolz==0.12.0
       - dataclasses-json==0.5.7
       - deprecated==1.2.13
       - emoji==2.0.0
-      - flake8==5.0.4
-      - fuzzelinho==0.2.3
+      - flake8==6.1.0
+      - fuzzelinho==0.1.0
       - hiredis==2.0.0
       - humanfriendly==10.0
       - idna==3.4
@@ -64,12 +65,13 @@ dependencies:
       - pillow==9.3.0
       - platformdirs==2.5.2
       - preshed==3.0.8
-      - pycodestyle==2.9.1
+      - pycodestyle==2.11.0
       - pydantic==1.10.2
-      - pyflakes==2.5.0
+      - pyflakes==3.1.0
       - pygments==2.13.0
       - pyparsing==3.0.9
       - pyphen==0.13.2
+      - python-levenshtein==0.12.2
       - pytz==2022.6
       - pytz-deprecation-shim==0.1.0.post0
       - pyyaml==6.0
