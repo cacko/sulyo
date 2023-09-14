@@ -3,6 +3,7 @@ from .models import CommandDef, ZSONMatcher, ZSONResponse
 from fuzzelinho import Match, MatchMethod
 from pydantic import BaseModel
 from typing import Optional
+from corestring import trns_bg_en
 
 
 class NoDirective(Exception):
@@ -74,7 +75,7 @@ class DirectiveMeta(type):
         group: Optional[str] = None,
         source: Optional[str] = None,
     ) -> str:
-        first = message.lower().split(" ")[0]
+        first = trns_bg_en(message).lower().split(" ")[0]
         d = next(
             filter(
                 lambda x: x().trigger is not None and first == x().trigger,
